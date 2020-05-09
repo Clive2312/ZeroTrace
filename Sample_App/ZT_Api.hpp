@@ -45,7 +45,7 @@ class myZT{
         void myZT_Access(uint32_t instance_id, char op_type, unsigned char * tag_in, unsigned char * tag_out, unsigned char * data_in, unsigned char * data_out);
 
 
-}
+};
 
 myZT::myZT(uint32_t data_size, uint32_t block_size){
   // params
@@ -111,7 +111,7 @@ myZT::myZT(uint32_t data_size, uint32_t block_size){
   free(serialized_public_key);
 }
 
-myZT::myZT_New(){
+uint32_t myZT::myZT_New(){
     return ZT_New(MAX_BLOCKS, DATA_SIZE, STASH_SIZE, OBLIVIOUS_FLAG, RECURSION_DATA_SIZE, ORAM_TYPE, Z);
 }
  
