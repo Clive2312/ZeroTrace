@@ -117,6 +117,7 @@ uint32_t myZT::myZT_New(){
  
 
 void myZT::myZT_Access(uint32_t instance_id, char op_type, unsigned char * tag_in, unsigned char * tag_out, unsigned char * data_in, unsigned char * data_out){
+    printf("Call Access\n");
     //prepare encrypted request
     uint32_t encrypted_request_size;
     encrypted_request_size = computeCiphertextSize(DATA_SIZE);
@@ -128,7 +129,7 @@ void myZT::myZT_Access(uint32_t instance_id, char op_type, unsigned char * tag_i
     //request = rs[i]
     printf("Prepare Request\n");
     generate_request_start = clock();
-    encryptRequest(0, 'r', data_in, DATA_SIZE, encrypted_request, tag_in, encrypted_request_size);
+    encryptRequest(0, op_type, data_in, DATA_SIZE, encrypted_request, tag_in, encrypted_request_size);
     generate_request_stop = clock();		
 
     //Process Request:
