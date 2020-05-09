@@ -5,9 +5,11 @@
 int main(int argc, char *argv[]) {
 
     uint32_t DATA_SIZE = 128;
-    uint32_t BLOCK_SIZE = 1000;
+    // ORAM BLOCK LEGTH
+    // ORAM SIZE = DATA_SIZE * BLOCK_LENGTH
+    uint32_t BLOCK_LENGTH = 1000;
 
-    myZT zt = myZT(DATA_SIZE, BLOCK_SIZE);
+    myZT zt = myZT(DATA_SIZE, BLOCK_LENGTH);
 
     // initialize an oram instance
     uint32_t instance_id = zt.myZT_New();
