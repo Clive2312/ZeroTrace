@@ -125,16 +125,19 @@ void myZT::myZT_Access(uint32_t instance_id, char op_type, unsigned char * tag_i
 
     //Prepare Request:
     //request = rs[i]
+    printf("Prepare Request\n");
     generate_request_start = clock();
     encryptRequest(0, 'r', data_in, DATA_SIZE, encrypted_request, tag_in, encrypted_request_size);
     generate_request_stop = clock();		
 
     //Process Request:
+    printf("Process Request\n");
     process_request_start = clock();		
     ZT_Access(instance_id, ORAM_TYPE, encrypted_request, encrypted_response, tag_in, tag_out, encrypted_request_size, response_size, TAG_SIZE);
     process_request_stop = clock();				
 
     //Extract Response:
+    printf("Extract Request\n");
     extract_response_start = clock();
     extractResponse(encrypted_response, tag_out, response_size, data_out);
     extract_response_stop = clock();
