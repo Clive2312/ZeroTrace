@@ -120,6 +120,7 @@ void myZT::myZT_Access(uint32_t instance_id, char op_type, unsigned char * tag_i
     //prepare encrypted request
     uint32_t encrypted_request_size;
     encrypted_request_size = computeCiphertextSize(DATA_SIZE);
+    response_size = DATA_SIZE;
     encrypted_request = (unsigned char *) malloc (encrypted_request_size);				
     encrypted_response = (unsigned char *) malloc (response_size);	
 
