@@ -28,7 +28,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 #
-
+OPENSSL_LIBRARY_PATH = /opt/intel/sgxssl/lib64 
 NASM ?= nasm
 NASM_Flags ?= -f elf64
 UNTRUSTED_DIR = /home/ssasy/Projects/oram_tester/eleos/eleos_core/trustedlib_lib_services/untrusted
@@ -138,7 +138,7 @@ else
 endif
 Crypto_Library_Name := sgx_tcrypto
 services_lib = /home/ssasy/Projects/oram_tester/eleos/eleos_core/trustedlib_lib_services
-SGXSSL_INCLUDE_PATH := /home/ssasy/intel-sgx-ssl/Linux/package/include
+SGXSSL_INCLUDE_PATH := /opt/intel/sgxssl/include #/home/ssasy/intel-sgx-ssl/Linux/package/include
 
 Enclave_Cpp_Files := ZT_Enclave/Globals_Enclave.cpp ZT_Enclave/ZT_Enclave.cpp ZT_Enclave/Enclave_utils.cpp ZT_Enclave/Block.cpp ZT_Enclave/Bucket.cpp ZT_Enclave/Stash.cpp ZT_Enclave/ORAMTree.cpp ZT_Enclave/PathORAM_Enclave.cpp ZT_Enclave/CircuitORAM_Enclave.cpp ZT_Enclave/LinearScan_ORAM.cpp $(wildcard ZT_Enclave/Edger8rSyntax/*.cpp) $(wildcard ZT_Enclave/TrustedLibrary/*.cpp)
 Enclave_Include_Paths := -IInclude -IEnclave -I$(SGX_SDK)/include -I$(SGX_SDK)/include/libcxx -I$(SGX_SDK)/include/tlibc -I$(SGX_SDK)/include/stlport -I$(SGXSSL_INCLUDE_PATH) 
@@ -146,7 +146,7 @@ Enclave_Include_Paths := -IInclude -IEnclave -I$(SGX_SDK)/include -I$(SGX_SDK)/i
 
 Enclave_C_Flags := $(SGX_COMMON_CFLAGS) -nostdinc -fvisibility=hidden -fpie -fstack-protector $(Enclave_Include_Paths)
 Enclave_Cpp_Flags := $(Enclave_C_Flags) -std=c++11 -nostdinc++
-SgxSSL_Link_Libraries := -L$(OPENSSL_LIBRARY_PATH) -Wl,--whole-archive -l$(SGXSSL_Library_Name) -Wl,--no-whole-archive \
+SgxSSL_Link_Libraries := -L/opt/intel/sgxssl/lib64/ -L$(OPENSSL_LIBRARY_PATH) -Wl,--whole-archive -l$(SGXSSL_Library_Name) -Wl,--no-whole-archive \
 
 # To generate a proper enclave, it is recommended to follow below guideline to link the trusted libraries:
 #    1. Link sgx_trts with the `--whole-archive' and `--no-whole-archive' options,
@@ -155,7 +155,7 @@ SgxSSL_Link_Libraries := -L$(OPENSSL_LIBRARY_PATH) -Wl,--whole-archive -l$(SGXSS
 #       Use `--start-group' and `--end-group' to link these libraries.
 # Do NOT move the libraries linked with `--start-group' and `--end-group' within `--whole-archive' and `--no-whole-archive' options.
 # Otherwise, you may get some undesirable errors.
-Enclave_Link_Flags := $(SGX_COMMON_CFLAGS) -Wl,--no-undefined -nostdlib -nodefaultlibs -nostartfiles -L$(SGX_LIBRARY_PATH) \
+Enclave_Link_Flags := -L/opt/intel/sgxssl/lib64/ $(SGX_COMMON_CFLAGS) -Wl,--no-undefined -nostdlib -nodefaultlibs -nostartfiles -L$(SGX_LIBRARY_PATH) \
         -Wl,--whole-archive -lsgx_tsgxssl -Wl,--no-whole-archive -lsgx_tsgxssl_crypto\
         -Wl,--whole-archive -l$(Trts_Library_Name) -Wl,--no-whole-archive \
         -Wl,--start-group -lsgx_tstdc -lsgx_tcxx -l$(Crypto_Library_Name) -l$(Service_Library_Name) -Wl,--end-group \
