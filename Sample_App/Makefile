@@ -1,10 +1,13 @@
 
 .PHONY: all clean
 
-all: Sample_App LS_Client HSORAM_Client Test_Correctness
+all: Sample_App LS_Client HSORAM_Client Test_Correctness ZT_Api
 
 Sample_App : Sample_App.cpp
 	g++ -std=c++11 Sample_App.cpp utils.cpp -L=$(CURDIR) -lZT -lcrypto -Wl,--rpath=$(CURDIR) -o sampleapp
+
+Sample_App : ZT_Api.cpp
+	g++ -std=c++11 ZT_Api.cpp utils.cpp -L=$(CURDIR) -lZT -lcrypto -Wl,--rpath=$(CURDIR) -o ztapi
 
 LS_Client : LS_Client.cpp utils.cpp
 	g++ -std=c++11 LS_Client.cpp utils.cpp -L=$(CURDIR) -lZT -lcrypto -Wl,--rpath=$(CURDIR) -o lsclient
