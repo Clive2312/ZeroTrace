@@ -42,7 +42,8 @@ class myZT{
 
         myZT(uint32_t data_size, uint32_t block_size);
         uint32_t myZT_New();
-        void myZT_Access(uint32_t instance_id, char op_type, unsigned char * tag_in, unsigned char * tag_out, unsigned char * data_in, unsigned char * data_out);
+        void myZT_Access(uint32_t instance_id, uint32_t block_id, char op_type, unsigned char * tag_in, unsigned char * tag_out, unsigned char * data_in, unsigned char * data_out);
+        void myZT_Bulk_Access(uint32_t instance_id, uint32_t* block_list, char op_type, unsigned char * tag_in, unsigned char * tag_out, unsigned char * data_in, unsigned char * data_out);
 
 
 };
@@ -116,7 +117,7 @@ uint32_t myZT::myZT_New(){
 }
  
 
-void myZT::myZT_Access(uint32_t instance_id, char op_type, unsigned char * tag_in, unsigned char * tag_out, unsigned char * data_in, unsigned char * data_out){
+void myZT::myZT_Access(uint32_t instance_id, uint32_t block_id ,char op_type, unsigned char * tag_in, unsigned char * tag_out, unsigned char * data_in, unsigned char * data_out){
     printf("Call Access\n");
     //prepare encrypted request
     uint32_t encrypted_request_size;
@@ -128,21 +129,51 @@ void myZT::myZT_Access(uint32_t instance_id, char op_type, unsigned char * tag_i
     //Prepare Request:
     //request = rs[i]
     printf("Prepare Request\n");
-    generate_request_start = clock();
-    encryptRequest(0, op_type, data_in, DATA_SIZE, encrypted_request, tag_in, encrypted_request_size);
-    generate_request_stop = clock();		
+    //generate_request_start = clock();
+    encryptRequest(block_id, op_type, data_in, DATA_SIZE, encrypted_request, tag_in, encrypted_request_size);
+    //generate_request_stop = clock();		
 
     //Process Request:
     printf("Process Request\n");
-    process_request_start = clock();		
+    //process_request_start = clock();		
     ZT_Access(instance_id, ORAM_TYPE, encrypted_request, encrypted_response, tag_in, tag_out, encrypted_request_size, response_size, TAG_SIZE);
-    process_request_stop = clock();				
+    //process_request_stop = clock();				
 
     //Extract Response:
     printf("Extract Request\n");
-    extract_response_start = clock();
+    //extract_response_start = clock();
     extractResponse(encrypted_response, tag_out, response_size, data_out);
-    extract_response_stop = clock();
+    //extract_response_stop = clock();
+
+    free(encrypted_request);
+    free(encrypted_response);
+}
+
+// 
+void myZT::myZT_Bulk_Access(uint32_t instance_id, uint32_t* block_list ,char op_type, uint32_t batch_size ,unsigned char * tag_in, unsigned char * tag_out, unsigned char * data_in, unsigned char * data_out){
+    printf("Call Access\n");
+    //prepare encrypted request
+    uint32_t encrypted_request_size;
+    encrypted_request_size = computeBulkRequestsCiphertextSize(batch_size);
+    response_size = DATA_SIZE * batch_size;
+    encrypted_request = (unsigned char *) malloc (encrypted_request_size);				
+    encrypted_response = (unsigned char *) malloc (response_size);	
+
+    //Prepare Request:
+    //request = rs[i]
+    printf("Prepare Request\n");
+    encryptBulkReadRequest(block_list, op_type, data_in, DATA_SIZE, encrypted_request, tag_in, encrypted_request_size);
+	
+
+    //Process Request:
+    printf("Process Request\n");		
+    ZT_Access(instance_id, ORAM_TYPE, encrypted_request, encrypted_response, tag_in, tag_out, encrypted_request_size, response_size, TAG_SIZE);
+		
+
+    //Extract Response:
+    printf("Extract Request\n");
+    extractResponse(encrypted_response, tag_out, response_size, data_out);
+
 
     free(encrypted_request);
     free(encrypted_response);
