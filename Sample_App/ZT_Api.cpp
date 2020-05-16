@@ -75,22 +75,26 @@ int main(int argc, char *argv[]) {
           printf("\n");
     #endif
 
-    uint32_t * req_list;
+    uint32_t batch_size = 2;
+
+    uint32_t* req_list = (uint32_t *) malloc( batch_size * sizeof(uint32_t) );
     req_list[0] = 1;
     req_list[1] = 2;
 
-    zt.myZT_Bulk_Access(instance_id, req_list, 2, tag_out, tag_null, data_null, data_out);
+    printf("Requests Bulk Read Start\n");
+
+    zt.myZT_Bulk_Access(instance_id, req_list, batch_size, tag_out, tag_null, data_null, data_out);
 
     printf("Requests Bulk Read Fin\n");
 
     #ifdef RESULTS_DEBUG
-          printf("datasize = %d, Fetched Data 2:", DATA_SIZE);
-          for(uint32_t j=0; j < DATA_SIZE;j++){
+          printf("datasize = %d, Fetched Data 2:", batch_size * DATA_SIZE);
+          for(uint32_t j=0; j < batch_size * DATA_SIZE;j++){
         printf("%c", data_out[j]);
           }
           printf("\n");
     #endif
-    
+
     free(tag_in);
     free(tag_out);
     free(tag_null);
