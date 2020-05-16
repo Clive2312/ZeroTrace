@@ -43,7 +43,7 @@ class myZT{
         myZT(uint32_t data_size, uint32_t block_size);
         uint32_t myZT_New();
         void myZT_Access(uint32_t instance_id, uint32_t block_id, char op_type, unsigned char * tag_in, unsigned char * tag_out, unsigned char * data_in, unsigned char * data_out);
-        void myZT_Bulk_Access(uint32_t instance_id, uint32_t* block_list, char op_type, uint32_t batch_size, unsigned char * tag_in, unsigned char * tag_out, unsigned char * data_in, unsigned char * data_out);
+        void myZT_Bulk_Access(uint32_t instance_id, uint32_t* block_list, uint32_t batch_size, unsigned char * tag_in, unsigned char * tag_out, unsigned char * data_in, unsigned char * data_out);
 
 
 };
@@ -150,7 +150,7 @@ void myZT::myZT_Access(uint32_t instance_id, uint32_t block_id, char op_type, un
 }
 
 // 
-void myZT::myZT_Bulk_Access(uint32_t instance_id, uint32_t* block_list ,char op_type, uint32_t batch_size ,unsigned char * tag_in, unsigned char * tag_out, unsigned char * data_in, unsigned char * data_out){
+void myZT::myZT_Bulk_Access(uint32_t instance_id, uint32_t* block_list, uint32_t batch_size ,unsigned char * tag_in, unsigned char * tag_out, unsigned char * data_in, unsigned char * data_out){
     printf("Call Access\n");
     //prepare encrypted request
     uint32_t req_counter = 0;	
@@ -172,7 +172,7 @@ void myZT::myZT_Bulk_Access(uint32_t instance_id, uint32_t* block_list ,char op_
 
     //Extract Response:
     printf("Extract Request\n");
-    extractResponse(encrypted_response, tag_out, response_size, data_out);
+    extractBulkResponse(encrypted_response, tag_out, response_size, data_out);	
 
 
     free(encrypted_request);
