@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
     unsigned char * data_in_2;
     unsigned char * data_out;
     unsigned char * data_null;
-    unsigned char * data_bulk;
+    
 
 
     tag_in = (unsigned char*) malloc (TAG_SIZE);
@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
     data_in_2 = (unsigned char*) malloc (DATA_SIZE);
     data_out = (unsigned char*) malloc (DATA_SIZE);
     data_null = (unsigned char*) malloc (DATA_SIZE);
-    data_bulk = (unsigned char*) malloc (2 * DATA_SIZE);
+    
 
     strcpy((char *)data_in_1, "Hello World 0001");
 
@@ -78,7 +78,8 @@ int main(int argc, char *argv[]) {
     #endif
 
     uint32_t batch_size = 2;
-
+    unsigned char * data_bulk;
+    data_bulk = (unsigned char*) malloc (batch_size * DATA_SIZE);
     uint32_t* req_list = (uint32_t *) malloc( batch_size * sizeof(uint32_t) );
 
     req_list[0] = 1;
