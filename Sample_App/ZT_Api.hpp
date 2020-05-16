@@ -117,7 +117,7 @@ uint32_t myZT::myZT_New(){
 }
  
 
-void myZT::myZT_Access(uint32_t instance_id, uint32_t block_id ,char op_type, unsigned char * tag_in, unsigned char * tag_out, unsigned char * data_in, unsigned char * data_out){
+void myZT::myZT_Access(uint32_t instance_id, uint32_t block_id, char op_type, uint32_t batch_size, unsigned char * tag_in, unsigned char * tag_out, unsigned char * data_in, unsigned char * data_out){
     printf("Call Access\n");
     //prepare encrypted request
     uint32_t encrypted_request_size;
