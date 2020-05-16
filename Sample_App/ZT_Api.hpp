@@ -167,8 +167,7 @@ void myZT::myZT_Bulk_Access(uint32_t instance_id, uint32_t* block_list, uint32_t
 
     //Process Request:
     printf("Process Request\n");		
-    ZT_Access(instance_id, ORAM_TYPE, encrypted_request, encrypted_response, tag_in, tag_out, encrypted_request_size, response_size, TAG_SIZE);
-		
+	ZT_Bulk_Read(instance_id, ORAM_TYPE, batch_size, encrypted_request, encrypted_response, tag_in, tag_out, encrypted_request_size, response_size, TAG_SIZE);	
 
     //Extract Response:
     printf("Extract Request\n");

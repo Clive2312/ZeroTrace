@@ -25,6 +25,7 @@ int main(int argc, char *argv[]) {
     unsigned char * data_in_2;
     unsigned char * data_out;
     unsigned char * data_null;
+    unsigned char * data_bulk;
 
 
     tag_in = (unsigned char*) malloc (TAG_SIZE);
@@ -34,6 +35,7 @@ int main(int argc, char *argv[]) {
     data_in_2 = (unsigned char*) malloc (DATA_SIZE);
     data_out = (unsigned char*) malloc (DATA_SIZE);
     data_null = (unsigned char*) malloc (DATA_SIZE);
+    data_bulk = (unsigned char*) malloc (2 * DATA_SIZE);
 
     strcpy((char *)data_in_1, "Hello World 0001");
 
@@ -75,29 +77,36 @@ int main(int argc, char *argv[]) {
           printf("\n");
     #endif
 
-    uint32_t * req_list = (uint32_t *)malloc(2*sizeof(uint32_t));
+    uint32_t batch_size = 2;
+
+    uint32_t* req_list = (uint32_t *) malloc( batch_size * sizeof(uint32_t) );
+
     req_list[0] = 1;
     req_list[1] = 2;
 
-    zt.myZT_Bulk_Access(instance_id, req_list, 2, tag_out, tag_null, data_null, data_out);
+    printf("Requests Bulk Read Start\n");
+
+    zt.myZT_Bulk_Access(instance_id, req_list, batch_size, tag_out, tag_null, data_bulk, data_bulk);
 
     printf("Requests Bulk Read Fin\n");
 
     #ifdef RESULTS_DEBUG
-          printf("datasize = %d, Fetched Data 2:", DATA_SIZE);
-          for(uint32_t j=0; j < DATA_SIZE;j++){
-        printf("%c", data_out[j]);
+          printf("datasize = %d, Fetched Data 2:", batch_size * DATA_SIZE);
+          for(uint32_t j=0; j < batch_size * DATA_SIZE;j++){
+        printf("%c", data_bulk[j]);
           }
           printf("\n");
     #endif
-    
+
     free(tag_in);
     free(tag_out);
     free(tag_null);
     free(data_in_1);
     free(data_in_2);
     free(data_out);
+    free(data_bulk);
     free(data_null);
+    free(req_list);
 }
 
 
