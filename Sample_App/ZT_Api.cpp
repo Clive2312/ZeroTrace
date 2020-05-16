@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) {
           printf("\n");
     #endif
 
-    uint32_t * req_list;
+    uint32_t * req_list = (uint32_t *)malloc(2*sizeof(uint32_t));
     req_list[0] = 1;
     req_list[1] = 2;
 
