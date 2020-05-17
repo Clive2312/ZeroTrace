@@ -32,6 +32,7 @@ class Controller{
     myZT zt;
 
     Controller();
+    ~Controller();
     // return block_id
     uint32_t DumpToZT(unsigned char * addr, uint32_t data_length);
     // return length
@@ -60,6 +61,13 @@ Controller::Controller(){
     data_in = (unsigned char*) malloc (BLOCK_SIZE);
     data_out = (unsigned char*) malloc (BLOCK_SIZE);
 
+}
+
+Controller::~Controller(){
+  free(tag_in);
+  free(tag_out);
+  free(data_in);
+  free(data_out);
 }
 
 uint32_t Controller::DumpToZT(unsigned char * addr, uint32_t data_length){
@@ -99,6 +107,7 @@ unsigned char * Controller::LoadFromZT(uint32_t block_id, uint32_t & data_length
   // bulk read block
   zt.myZT_Bulk_Access(data_instance, meta + 2, block_length, tag_in, tag_out, data_in, bulk_data_out);
   memcpy(data, bulk_data_out, data_length);
+  free(bulk_data_out);
   return data;
 }
 
@@ -126,11 +135,14 @@ int main(int argc, char *argv[]){
 
   #ifdef RESULTS_DEBUG
     printf("datasize = %d, Data out:", length_out);
-    for(uint32_t j=0; j < 5*BLOCK_SIZE;j++){
+    for(uint32_t j=0; j < BLOCK_LEN*BLOCK_SIZE;j++){
       printf("%c", chunk_out[j]);
     }
     printf("\n");
   #endif
+  
+  free(chunk);
+  free(chunk_out);
   return 0;
 }
  
