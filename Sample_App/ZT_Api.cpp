@@ -17,7 +17,7 @@
 * 
 */
 
-myZT zt = myZT(BLOCK_SIZE, BLOCK_LENGTH);
+myZT 
 
 class Controller{
   public:
@@ -31,7 +31,7 @@ class Controller{
     uint32_t meta_counter;
 
     unsigned char * tag_in, *tag_out, *data_in, *data_out;
-
+    myZT zt;
 
     Controller();
     // return block_id
@@ -51,7 +51,7 @@ Controller::Controller(){
 
     BLOCK_SIZE = 1024;
 
-
+    zt = myZT(BLOCK_SIZE, BLOCK_LENGTH);
 
     meta_instance = zt.myZT_New();
 
