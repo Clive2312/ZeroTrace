@@ -17,9 +17,11 @@
 * 
 */
 
+myZT zt = myZT(BLOCK_SIZE, BLOCK_LENGTH);
+
 class Controller{
   public:
-    myZT zt;
+
     uint32_t data_instance;
     uint32_t meta_instance;
     uint32_t BLOCK_SIZE;
@@ -49,7 +51,7 @@ Controller::Controller(){
 
     BLOCK_SIZE = 1024;
 
-    zt = myZT(BLOCK_SIZE, BLOCK_LENGTH);
+
 
     meta_instance = zt.myZT_New();
 
