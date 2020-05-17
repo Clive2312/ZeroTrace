@@ -35,7 +35,7 @@ class Controller{
     // return block_id
     uint32_t DumpToZT(unsigned char * addr, uint32_t data_length);
     // return length
-    unsigned char * LoadFromZT(unsigned char * addr, uint32_t &block_id);
+    unsigned char * LoadFromZT(uint32_t block_id, uint32_t & data_length);
 
 };
 
