@@ -115,7 +115,7 @@ int main(int argc, char *argv[]){
   unsigned char * chunk = (unsigned char *)malloc(BLOCK_LEN * BLOCK_SIZE);
 
   for(int i = 0; i < BLOCK_LEN; i++){
-    strcpy((char *)chunk + i * BLOCK_SIZE, "Hello World!");
+    strcpy((char *)chunk + i * BLOCK_SIZE, "Hello World233233233!");
   }
 
   uint32_t id = ct.DumpToZT(chunk, BLOCK_LEN * BLOCK_SIZE);
@@ -126,7 +126,7 @@ int main(int argc, char *argv[]){
 
   #ifdef RESULTS_DEBUG
     printf("datasize = %d, Data out:", length_out);
-    for(uint32_t j=0; j < BLOCK_LEN*BLOCK_SIZE;j++){
+    for(uint32_t j=0; j < 5*BLOCK_SIZE;j++){
       printf("%c", chunk_out[j]);
     }
     printf("\n");
