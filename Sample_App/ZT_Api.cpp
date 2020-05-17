@@ -37,7 +37,7 @@ class Controller{
     // return length
     unsigned char * LoadFromZT(unsigned char * addr, uint32_t block_id);
 
-}
+};
 
 Controller::Controller(){
 
