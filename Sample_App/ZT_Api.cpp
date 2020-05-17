@@ -35,7 +35,7 @@ class Controller{
     // return block_id
     uint32_t DumpToZT(unsigned char * addr, uint32_t data_length);
     // return length
-    void LoadFromZT(unsigned char * addr, uint32_t block_id);
+    unsigned char * LoadFromZT(unsigned char * addr, uint32_t block_id);
 
 }
 
@@ -65,7 +65,7 @@ Controller::Controller(){
 uint32_t Controller::DumpToZT(unsigned char * addr, uint32_t data_length){
   int block_count = (data_length + BLOCK_SIZE - 1)/ BLOCK_SIZE;
   int meta[block_count + 2];
-  mata[0] = block_count;
+  meta[0] = block_count;
   meta[1] = data_length;
   // write data block
   for(int i = 0; i < block_count; i++){
