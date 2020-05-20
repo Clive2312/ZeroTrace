@@ -66,21 +66,25 @@ Controller::Controller(){
 
     // write dummy
     int block_count = BLOCK_SIZE/sizeof(uint32_t) - 2;
-    unsigned char * dummy_data = (unsigned char *)malloc(block_count*BLOCK_SIZE);
+    unsigned char * dummy_data = (unsigned char *)malloc(BLOCK_SIZE);
     int meta[block_count + 2];
     meta[0] = block_count;
     meta[1] = block_count*BLOCK_SIZE;
+    // write dummy block
+    memcpy(data_in, dummy_data + i*BLOCK_SIZE, BLOCK_SIZE);
+    zt.myZT_Access(data_instance, data_counter, 'w', tag_in, tag_out, data_in, data_out);
+
+    //write meta info
     for(int i = 0; i < block_count; i++){
-      memcpy(data_in, dummy_data + i*BLOCK_SIZE, BLOCK_SIZE);
-      zt.myZT_Access(data_instance, data_counter + i, 'w', tag_in, tag_out, data_in, data_out);
-      meta[i + 2] = data_counter + i;
+      meta[i + 2] = data_counter;
     }
+
     //write meta block
     memcpy(data_in, meta, sizeof(meta));
     zt.myZT_Access(meta_instance, meta_counter, 'w', tag_in, tag_out, data_in, data_out);
 
     meta_counter += 1;
-    data_counter += block_count;
+    data_counter += 1;
 
     dummy_id = meta_counter - 1;
     printf("Controller Initialize Done\n");
@@ -181,7 +185,7 @@ int main(int argc, char *argv[]){
   Controller ct = Controller();
   ct.LoadDummy(2);
   printf("Dummy Load Done\n");
-  
+
   unsigned char * chunk = (unsigned char *)malloc(BLOCK_LEN * BLOCK_SIZE);
 
   for (int i = 0; i < 1; i++){  
