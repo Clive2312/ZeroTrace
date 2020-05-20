@@ -127,7 +127,7 @@ int main(int argc, char *argv[]){
   Controller ct = Controller();
   unsigned char * chunk = (unsigned char *)malloc(BLOCK_LEN * BLOCK_SIZE);
 
-  for (int i = 0; i < 1; i++){  
+  for (int i = 0; i < 10; i++){  
 
     
     unsigned char arr[1024*1024];
