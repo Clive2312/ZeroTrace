@@ -125,33 +125,36 @@ int main(int argc, char *argv[]){
 
   // controller testing
   Controller ct = Controller();
-
-
   unsigned char * chunk = (unsigned char *)malloc(BLOCK_LEN * BLOCK_SIZE);
-  
-  unsigned char arr[100*1024];
-  memset(arr, 'a', sizeof(arr));
-  // for(int i = 0; i < BLOCK_LEN; i++){
-  //   strcpy((char *)chunk + i * BLOCK_SIZE, "Hello World233233233!");
-  // }
-  memset(chunk, 'a', BLOCK_LEN * BLOCK_SIZE);
 
-  uint32_t id = ct.DumpToZT(arr, sizeof(arr));
+  for (int i = 0; i < 1; i++){  
 
-  uint32_t length_out = 0;
+    
+    unsigned char arr[1024*1024];
+    memset(arr, 'a', sizeof(arr));
+    // for(int i = 0; i < BLOCK_LEN; i++){
+    //   strcpy((char *)chunk + i * BLOCK_SIZE, "Hello World233233233!");
+    // }
+    memset(chunk, 'a', BLOCK_LEN * BLOCK_SIZE);
 
-  unsigned char * chunk_out = ct.LoadFromZT(id, length_out);
+    uint32_t id = ct.DumpToZT(arr, sizeof(arr));
 
-  #ifdef RESULTS_DEBUG
-    printf("datasize = %d, Data out:", length_out);
-    for(uint32_t j=0; j < BLOCK_LEN*BLOCK_SIZE;j++){
-      printf("%c", chunk_out[j]);
-    }
-    printf("\n");
-  #endif
+    uint32_t length_out = 0;
+
+    unsigned char * chunk_out = ct.LoadFromZT(id, length_out);
+
+    #ifdef RESULTS_DEBUG
+      printf("datasize = %d, Data out:", length_out);
+      for(uint32_t j=0; j < BLOCK_LEN*BLOCK_SIZE;j++){
+        printf("%c", chunk_out[j]);
+      }
+      printf("\n");
+    #endif
+    free(chunk_out);
+  }
   
   free(chunk);
-  free(chunk_out);
+
   return 0;
 }
  
