@@ -126,7 +126,7 @@ int main(int argc, char *argv[]){
   // for(int i = 0; i < BLOCK_LEN; i++){
   //   strcpy((char *)chunk + i * BLOCK_SIZE, "Hello World233233233!");
   // }
-  memset(chunk, 'a', sizeof(chunk));
+  memset(chunk, 'a', BLOCK_LEN * BLOCK_SIZE);
 
   uint32_t id = ct.DumpToZT(chunk, BLOCK_LEN * BLOCK_SIZE);
 
