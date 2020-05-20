@@ -46,7 +46,7 @@ Controller::Controller(){
 
     meta_counter = 0;
     
-    BLOCK_LENGTH = 512*1024;
+    BLOCK_LENGTH = 1024;
 
     BLOCK_SIZE = 1024;
 
@@ -123,9 +123,10 @@ int main(int argc, char *argv[]){
 
   unsigned char * chunk = (unsigned char *)malloc(BLOCK_LEN * BLOCK_SIZE);
 
-  for(int i = 0; i < BLOCK_LEN; i++){
-    strcpy((char *)chunk + i * BLOCK_SIZE, "Hello World233233233!");
-  }
+  // for(int i = 0; i < BLOCK_LEN; i++){
+  //   strcpy((char *)chunk + i * BLOCK_SIZE, "Hello World233233233!");
+  // }
+  memset(chunk, 'a', sizeof(chunk));
 
   uint32_t id = ct.DumpToZT(chunk, BLOCK_LEN * BLOCK_SIZE);
 
