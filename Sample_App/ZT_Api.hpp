@@ -156,7 +156,7 @@ void myZT::myZT_Access(uint32_t instance_id, uint32_t block_id, char op_type, un
 
 // 
 void myZT::myZT_Bulk_Access(uint32_t instance_id, uint32_t* block_list, uint32_t batch_size ,unsigned char * tag_in, unsigned char * tag_out, unsigned char * data_in, unsigned char * data_out){
-    printf("Call Access\n");
+    printf("Call Bulk Access\n");
     //prepare encrypted request
     uint32_t req_counter = 0;	
     uint32_t encrypted_request_size;
@@ -167,15 +167,15 @@ void myZT::myZT_Bulk_Access(uint32_t instance_id, uint32_t* block_list, uint32_t
 
     //Prepare Request:
     //request = rs[i]
-    printf("Prepare Request\n");
+    printf("Prepare Bulk Request\n");
 	encryptBulkReadRequest(block_list, req_counter, batch_size, encrypted_request, tag_in, encrypted_request_size);
 
     //Process Request:
-    printf("Process Request\n");		
+    printf("Process Bulk Request\n");		
 	ZT_Bulk_Read(instance_id, ORAM_TYPE, batch_size, encrypted_request, encrypted_response, tag_in, tag_out, encrypted_request_size, response_size, TAG_SIZE);	
 
     //Extract Response:
-    printf("Extract Request\n");
+    printf("Extract Bulk Request\n");
     extractBulkResponse(encrypted_response, tag_out, response_size, data_out);	
 
 
