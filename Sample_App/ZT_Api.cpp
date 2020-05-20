@@ -46,9 +46,9 @@ Controller::Controller(){
 
     meta_counter = 0;
     
-    BLOCK_LENGTH = 512 * 1024;
+    BLOCK_LENGTH = 8388608;
 
-    BLOCK_SIZE = 1024;
+    BLOCK_SIZE = 128;
 
     zt = myZT(BLOCK_SIZE, BLOCK_LENGTH);
 
@@ -113,7 +113,7 @@ unsigned char * Controller::LoadFromZT(uint32_t block_id, uint32_t & data_length
 
 int main(int argc, char *argv[]){
 
-  uint32_t BLOCK_SIZE = 1024;
+  uint32_t BLOCK_SIZE = 128;
 
   uint32_t BLOCK_LEN = 10;
 
