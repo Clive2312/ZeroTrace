@@ -71,7 +71,7 @@ Controller::Controller(){
     meta[0] = block_count;
     meta[1] = block_count*BLOCK_SIZE;
     // write dummy block
-    memcpy(data_in, dummy_data + i*BLOCK_SIZE, BLOCK_SIZE);
+    memcpy(data_in, dummy_data, BLOCK_SIZE);
     zt.myZT_Access(data_instance, data_counter, 'w', tag_in, tag_out, data_in, data_out);
 
     //write meta info
