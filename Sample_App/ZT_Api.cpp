@@ -71,7 +71,7 @@ Controller::Controller(){
     meta[0] = block_count;
     meta[1] = block_count*BLOCK_SIZE;
     for(int i = 0; i < block_count; i++){
-      memcpy(data_in, addr + i*BLOCK_SIZE, BLOCK_SIZE);
+      memcpy(data_in, dummy_data + i*BLOCK_SIZE, BLOCK_SIZE);
       zt.myZT_Access(data_instance, data_counter + i, 'w', tag_in, tag_out, data_in, data_out);
       meta[i + 2] = data_counter + i;
     }
@@ -150,7 +150,7 @@ void Controller::LoadDummy(uint32_t N){
   zt.myZT_Access(meta_instance, dummy_id, 'r', tag_in, tag_out, data_in , data_out);
   uint32_t* meta = (uint32_t *)data_out;
   int block_length = meta[0];
-  data_length = meta[1];
+  int data_length = meta[1];
 
   printf("Block Length: %d\n", block_length);
 
