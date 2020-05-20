@@ -28,6 +28,8 @@ class Controller{
     uint32_t data_counter;
     uint32_t meta_counter;
 
+    uint32_t dummy_id;
+
     unsigned char * tag_in, *tag_out, *data_in, *data_out;
     myZT zt;
 
@@ -37,6 +39,7 @@ class Controller{
     uint32_t DumpToZT(unsigned char * addr, uint32_t data_length);
     // return length
     unsigned char * LoadFromZT(uint32_t block_id, uint32_t & data_length);
+    void LoadDummy(uint32_t N);
 
 };
 
@@ -60,6 +63,26 @@ Controller::Controller(){
     tag_out = (unsigned char*) malloc (TAG_SIZE);
     data_in = (unsigned char*) malloc (BLOCK_SIZE);
     data_out = (unsigned char*) malloc (BLOCK_SIZE);
+
+    // write dummy
+    int block_count = BLOCK_SIZE/sizeof(uint32_t) - 2;
+    unsigned char * dummy_data = (unsigned char *)malloc(block_count*BLOCK_SIZE);
+    int meta[block_count + 2];
+    meta[0] = block_count;
+    meta[1] = block_count*BLOCK_SIZE;
+    for(int i = 0; i < block_count; i++){
+      memcpy(data_in, addr + i*BLOCK_SIZE, BLOCK_SIZE);
+      zt.myZT_Access(data_instance, data_counter + i, 'w', tag_in, tag_out, data_in, data_out);
+      meta[i + 2] = data_counter + i;
+    }
+    //write meta block
+    memcpy(data_in, meta, sizeof(meta));
+    zt.myZT_Access(meta_instance, meta_counter, 'w', tag_in, tag_out, data_in, data_out);
+
+    meta_counter += 1;
+    data_counter += block_count;
+
+    dummy_id = meta_counter - 1;
 
 }
 
@@ -117,6 +140,36 @@ unsigned char * Controller::LoadFromZT(uint32_t block_id, uint32_t & data_length
   return data;
 }
 
+void LoadDummy(uint32_t N){
+  if(N > BLOCK_SIZE/sizeof(uint32_t) - 2){
+    printf("EEERRRRRRRRROOOOOOO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+    return;
+  }
+  //printf("Load from ZT\n");
+  // read from meta
+  zt.myZT_Access(meta_instance, dummy_id, 'r', tag_in, tag_out, data_in , data_out);
+  uint32_t* meta = (uint32_t *)data_out;
+  int block_length = meta[0];
+  data_length = meta[1];
+
+  printf("Block Length: %d\n", block_length);
+
+  printf("Data Length: %d\n", data_length);
+
+  // space allocation
+  unsigned char * data = (unsigned char *)malloc(data_length);
+  unsigned char * bulk_data_out = (unsigned char *)malloc(block_length * BLOCK_SIZE);
+
+  // bulk read block
+  zt.myZT_Bulk_Access(data_instance, meta + 2, N, tag_in, tag_out, data_in, bulk_data_out);
+  memcpy(data, bulk_data_out, data_length);
+  free(bulk_data_out);
+  free(data);
+  return;
+}
+
+
+
 int main(int argc, char *argv[]){
 
   uint32_t BLOCK_SIZE = 4096;
@@ -125,35 +178,36 @@ int main(int argc, char *argv[]){
 
   // controller testing
   Controller ct = Controller();
-  unsigned char * chunk = (unsigned char *)malloc(BLOCK_LEN * BLOCK_SIZE);
+  ct.LoadDummy(2);
+  // unsigned char * chunk = (unsigned char *)malloc(BLOCK_LEN * BLOCK_SIZE);
 
-  for (int i = 0; i < 100; i++){  
+  // for (int i = 0; i < 100; i++){  
 
     
-    unsigned char arr[1024*1024];
-    memset(arr, 'a', sizeof(arr));
-    // for(int i = 0; i < BLOCK_LEN; i++){
-    //   strcpy((char *)chunk + i * BLOCK_SIZE, "Hello World233233233!");
-    // }
-    memset(chunk, 'a', BLOCK_LEN * BLOCK_SIZE);
+  //   unsigned char arr[1024*1024];
+  //   memset(arr, 'a', sizeof(arr));
+  //   // for(int i = 0; i < BLOCK_LEN; i++){
+  //   //   strcpy((char *)chunk + i * BLOCK_SIZE, "Hello World233233233!");
+  //   // }
+  //   memset(chunk, 'a', BLOCK_LEN * BLOCK_SIZE);
 
-    uint32_t id = ct.DumpToZT(arr, sizeof(arr));
+  //   uint32_t id = ct.DumpToZT(arr, sizeof(arr));
 
-    uint32_t length_out = 0;
+  //   uint32_t length_out = 0;
 
-    unsigned char * chunk_out = ct.LoadFromZT(id, length_out);
+  //   unsigned char * chunk_out = ct.LoadFromZT(id, length_out);
 
-    #ifdef RESULTS_DEBUG
-      printf("datasize = %d, Data out:", length_out);
-      for(uint32_t j=0; j < BLOCK_LEN*BLOCK_SIZE;j++){
-        printf("%c", chunk_out[j]);
-      }
-      printf("\n");
-    #endif
-    free(chunk_out);
-  }
+  //   #ifdef RESULTS_DEBUG
+  //     printf("datasize = %d, Data out:", length_out);
+  //     for(uint32_t j=0; j < BLOCK_LEN*BLOCK_SIZE;j++){
+  //       printf("%c", chunk_out[j]);
+  //     }
+  //     printf("\n");
+  //   #endif
+  //   free(chunk_out);
+  // }
   
-  free(chunk);
+  // free(chunk);
 
   return 0;
 }
