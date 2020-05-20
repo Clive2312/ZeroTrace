@@ -123,12 +123,14 @@ int main(int argc, char *argv[]){
 
   unsigned char * chunk = (unsigned char *)malloc(BLOCK_LEN * BLOCK_SIZE);
   
+  unsigned char arr[100*1024*1024];
+  memset(arr, 'a', sizeof(arr));
   // for(int i = 0; i < BLOCK_LEN; i++){
   //   strcpy((char *)chunk + i * BLOCK_SIZE, "Hello World233233233!");
   // }
   memset(chunk, 'a', BLOCK_LEN * BLOCK_SIZE);
 
-  uint32_t id = ct.DumpToZT(chunk, BLOCK_LEN * BLOCK_SIZE);
+  uint32_t id = ct.DumpToZT(arr, sizeof(arr));
 
   uint32_t length_out = 0;
 
