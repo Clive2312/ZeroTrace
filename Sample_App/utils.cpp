@@ -551,7 +551,7 @@ int encryptBulkReadRequest(uint32_t *rs, uint32_t req_counter, uint32_t bulk_bat
   printf("CHECK POINT 1 encrypted rs size: %d\n", encrypted_request_size);
   unsigned char *iv = (unsigned char *) malloc (IV_LENGTH);
   printf("CHECK POINT 2\n");
-  unsigned char *serialized_request = (unsigned char*) malloc (encrypted_request_size);
+  unsigned char *serialized_request = (unsigned char*) malloc (bulk_batch_size*ID_SIZE_IN_BYTES);
   printf("CHECK POINT 3\n");
   unsigned char *serialized_request_ptr = serialized_request;
   for(int i =0;i<bulk_batch_size;i++){
