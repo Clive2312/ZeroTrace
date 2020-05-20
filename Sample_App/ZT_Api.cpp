@@ -46,9 +46,9 @@ Controller::Controller(){
 
     meta_counter = 0;
     
-    BLOCK_LENGTH = 8388608;
+    BLOCK_LENGTH = 128*1024;
 
-    BLOCK_SIZE = 128;
+    BLOCK_SIZE = 4096;
 
     zt = myZT(BLOCK_SIZE, BLOCK_LENGTH);
 
@@ -113,7 +113,7 @@ unsigned char * Controller::LoadFromZT(uint32_t block_id, uint32_t & data_length
 
 int main(int argc, char *argv[]){
 
-  uint32_t BLOCK_SIZE = 128;
+  uint32_t BLOCK_SIZE = 4096;
 
   uint32_t BLOCK_LEN = 10;
 
@@ -122,7 +122,7 @@ int main(int argc, char *argv[]){
 
 
   unsigned char * chunk = (unsigned char *)malloc(BLOCK_LEN * BLOCK_SIZE);
-
+  
   // for(int i = 0; i < BLOCK_LEN; i++){
   //   strcpy((char *)chunk + i * BLOCK_SIZE, "Hello World233233233!");
   // }
