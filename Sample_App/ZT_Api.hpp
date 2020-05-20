@@ -57,7 +57,7 @@ myZT::myZT(uint32_t data_size, uint32_t block_size){
   // params
   DATA_SIZE = data_size;
   MAX_BLOCKS = block_size;
-  STASH_SIZE = 300;
+  STASH_SIZE = 180;
   OBLIVIOUS_FLAG = 1;
   RECURSION_DATA_SIZE = 64;
   //path
