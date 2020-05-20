@@ -588,7 +588,7 @@ uint32_t computeCiphertextSize(uint32_t data_size){
   if((ID_SIZE_IN_BYTES+data_size)%AES_GCM_BLOCK_SIZE_IN_BYTES!=0)
     encrypted_request_size+=1;
   encrypted_request_size*=16;
-  printf("Request_size = %d\n", encrypted_request_size);
+  // printf("Request_size = %d\n", encrypted_request_size);
   return encrypted_request_size;
 }
 
@@ -598,7 +598,7 @@ uint32_t computeBulkRequestsCiphertextSize(uint32_t bulk_batch_size) {
   if((ID_SIZE_IN_BYTES*bulk_batch_size)%AES_GCM_BLOCK_SIZE_IN_BYTES!=0)
     encrypted_request_size+=1;
   encrypted_request_size*=AES_GCM_BLOCK_SIZE_IN_BYTES;
-  printf("Request_size = %d\n", encrypted_request_size);
+  // printf("Request_size = %d\n", encrypted_request_size);
   return encrypted_request_size;
 }
 
