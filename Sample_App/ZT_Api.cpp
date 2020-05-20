@@ -140,7 +140,7 @@ unsigned char * Controller::LoadFromZT(uint32_t block_id, uint32_t & data_length
   return data;
 }
 
-void LoadDummy(uint32_t N){
+void Controller::LoadDummy(uint32_t N){
   if(N > BLOCK_SIZE/sizeof(uint32_t) - 2){
     printf("EEERRRRRRRRROOOOOOO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
     return;
