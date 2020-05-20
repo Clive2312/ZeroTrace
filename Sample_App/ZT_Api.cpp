@@ -94,11 +94,17 @@ uint32_t Controller::DumpToZT(unsigned char * addr, uint32_t data_length){
 }
 
 unsigned char * Controller::LoadFromZT(uint32_t block_id, uint32_t & data_length){
+
+  printf("Load from ZT\n");
   // read from meta
   zt.myZT_Access(meta_instance, block_id, 'r', tag_in, tag_out, data_in , data_out);
   uint32_t* meta = (uint32_t *)data_out;
   int block_length = meta[0];
   data_length = meta[1];
+
+  printf("Block Length: %d\n", block_length);
+
+  printf("Data Length: %d\n", data_length);
 
   // space allocation
   unsigned char * data = (unsigned char *)malloc(data_length);
