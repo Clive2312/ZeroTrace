@@ -46,7 +46,7 @@ Controller::Controller(){
 
     meta_counter = 0;
     
-    BLOCK_LENGTH = 256 * 1024;
+    BLOCK_LENGTH = 512 * 1024;
 
     BLOCK_SIZE = 1024;
 
