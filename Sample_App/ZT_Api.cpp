@@ -199,7 +199,7 @@ int main(int argc, char *argv[]){
   uint32_t BLOCK_LEN = 10;
 
   // controller testing
-  Controller ct = Controller(BLOCK_SIZE, );
+  Controller ct = Controller(BLOCK_SIZE, BLOCK_LENGTH);
   ct.LoadDummy(2);
   printf("Dummy Load Done\n");
 
