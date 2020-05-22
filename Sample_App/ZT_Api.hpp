@@ -8,6 +8,7 @@
 #include <string.h>
 #include <cstdint>
 #include <random>
+#include <vector>
 #include "ZT.hpp"
 #include <openssl/ec.h>
 #include <openssl/ecdh.h>
@@ -16,6 +17,8 @@
 #include <openssl/evp.h>
 #include <openssl/err.h>
 #include <openssl/obj_mac.h>
+
+
 
 class myZT{
     public:
@@ -35,6 +38,7 @@ class myZT{
         uint32_t request_size, response_size;
         uint32_t bulk_batch_size;
         std::string log_file;
+        std::vector<uint32_t> ids;
 
         clock_t generate_request_start, generate_request_stop, extract_response_start, extract_response_stop, process_request_start, process_request_stop, generate_request_time, extract_response_time,  process_request_time;
         uint8_t Z;
@@ -64,6 +68,10 @@ myZT::myZT(uint32_t data_size, uint32_t block_size){
   ORAM_TYPE = 0;
   bulk_batch_size = 0;
   Z = 4;
+
+  for(int i = 0; i < block_size; i++){
+      ids.push_back(i + 1);
+  }
 
   // Variables for Enclave Public Key retrieval 
   uint32_t max_buff_size = PRIME256V1_KEY_SIZE;
