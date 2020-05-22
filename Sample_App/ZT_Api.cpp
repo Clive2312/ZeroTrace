@@ -36,7 +36,7 @@ class Controller{
     unsigned char * tag_in, *tag_out, *data_in, *data_out;
     myZT zt;
 
-    Controller();
+    Controller(uint32_t block_size, uint32_t block_length);
     ~Controller();
     // return block_id
     uint32_t DumpToZT(unsigned char * addr, uint32_t data_length);
@@ -46,15 +46,15 @@ class Controller{
 
 };
 
-Controller::Controller(){
+Controller::Controller(uint32_t block_size, uint32_t block_length){
 
     data_counter = 0;
 
     meta_counter = 0;
     
-    BLOCK_LENGTH = 128*1024;
+    BLOCK_LENGTH = block_length;
 
-    BLOCK_SIZE = 4096;
+    BLOCK_SIZE = block_size;
 
     zt = myZT(BLOCK_SIZE, BLOCK_LENGTH);
 
@@ -194,10 +194,12 @@ int main(int argc, char *argv[]){
 
   uint32_t BLOCK_SIZE = 4096;
 
+  uint32_t BLOCK_LENGTH = 128 * 1024;
+
   uint32_t BLOCK_LEN = 10;
 
   // controller testing
-  Controller ct = Controller();
+  Controller ct = Controller(BLOCK_SIZE, );
   ct.LoadDummy(2);
   printf("Dummy Load Done\n");
 
