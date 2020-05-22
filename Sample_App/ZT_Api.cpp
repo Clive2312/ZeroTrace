@@ -104,10 +104,13 @@ uint32_t Controller::DumpToZT(unsigned char * addr, uint32_t data_length){
   meta[0] = block_count;
   meta[1] = data_length;
   // write data block
+  uint32_t *rs = reqsource.GenerateRandomSequence(block_count, BLOCK_LENGTH-1);
   for(int i = 0; i < block_count; i++){
     memcpy(data_in, addr + i*BLOCK_SIZE, BLOCK_SIZE);
-    zt.myZT_Access(data_instance, data_counter + i, 'w', tag_in, tag_out, data_in, data_out);
-    meta[i + 2] = data_counter + i;
+    zt.myZT_Access(data_instance, rs[i], 'w', tag_in, tag_out, data_in, data_out);
+    meta[i + 2] = rs[i];
+    // zt.myZT_Access(data_instance, data_counter + i, 'w', tag_in, tag_out, data_in, data_out);
+    // meta[i + 2] = data_counter + i;
   }
 
   //write meta block
