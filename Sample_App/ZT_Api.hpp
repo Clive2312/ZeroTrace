@@ -72,6 +72,12 @@ myZT::myZT(uint32_t data_size, uint32_t block_size){
   for(int i = 0; i < block_size; i++){
       ids.push_back(i + 1);
   }
+  // shuffle ids
+  std::random_shuffle ( ids.begin(), ids.end());
+
+  for(int i = 0; i < 100; i++){
+      printf("after shuffle: %d\n", ids[i]);
+  }
 
   // Variables for Enclave Public Key retrieval 
   uint32_t max_buff_size = PRIME256V1_KEY_SIZE;
