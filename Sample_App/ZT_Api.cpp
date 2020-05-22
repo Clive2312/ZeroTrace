@@ -30,6 +30,9 @@ class Controller{
 
     uint32_t dummy_id;
 
+    std::vector<uint32_t> data_ids;
+    std::vector<uint32_t> inode_ids;
+
     unsigned char * tag_in, *tag_out, *data_in, *data_out;
     myZT zt;
 
@@ -55,6 +58,14 @@ Controller::Controller(){
 
     zt = myZT(BLOCK_SIZE, BLOCK_LENGTH);
 
+    for(int i = 0; i < BLOCK_LENGTH i++){
+      data_ids.push_back(i + 1);
+      inode_ids.push_back(i + 1);
+    }
+    // shuffle ids
+    std::random_shuffle ( data_ids.begin(), data_ids.end());
+    std::random_shuffle ( inode_ids.begin(), inode_ids.end());
+
     meta_instance = zt.myZT_New();
 
     data_instance = zt.myZT_New();
@@ -72,7 +83,7 @@ Controller::Controller(){
     meta[1] = block_count*BLOCK_SIZE;
     // write dummy block
     memcpy(data_in, dummy_data, BLOCK_SIZE);
-    zt.myZT_Access(data_instance, data_counter, 'w', tag_in, tag_out, data_in, data_out);
+    zt.myZT_Access(data_instance, data_ids[data_counter], 'w', tag_in, tag_out, data_in, data_out);
 
     //write meta info
     for(int i = 0; i < block_count; i++){
@@ -81,12 +92,12 @@ Controller::Controller(){
 
     //write meta block
     memcpy(data_in, meta, sizeof(meta));
-    zt.myZT_Access(meta_instance, meta_counter, 'w', tag_in, tag_out, data_in, data_out);
+    zt.myZT_Access(meta_instance, inode_ids[meta_counter], 'w', tag_in, tag_out, data_in, data_out);
 
     meta_counter += 1;
     data_counter += 1;
 
-    dummy_id = meta_counter - 1;
+    dummy_id = inode_ids[meta_counter - 1];
     printf("Controller Initialize Done\n");
 
 }
@@ -108,21 +119,21 @@ uint32_t Controller::DumpToZT(unsigned char * addr, uint32_t data_length){
   uint32_t *rs = reqsource.GenerateRandomSequence(block_count, BLOCK_LENGTH-1);
   for(int i = 0; i < block_count; i++){
     memcpy(data_in, addr + i*BLOCK_SIZE, BLOCK_SIZE);
-    zt.myZT_Access(data_instance, rs[i], 'w', tag_in, tag_out, data_in, data_out);
-    meta[i + 2] = rs[i];
-    // zt.myZT_Access(data_instance, data_counter + i, 'w', tag_in, tag_out, data_in, data_out);
-    // meta[i + 2] = data_counter + i;
+    // zt.myZT_Access(data_instance, rs[i], 'w', tag_in, tag_out, data_in, data_out);
+    // meta[i + 2] = rs[i];
+    zt.myZT_Access(data_instance, data_ids[data_counter + i], 'w', tag_in, tag_out, data_in, data_out);
+    meta[i + 2] = data_ids[data_counter + i];
   }
 
   //write meta block
   memcpy(data_in, meta, sizeof(meta));
-  zt.myZT_Access(meta_instance, meta_counter, 'w', tag_in, tag_out, data_in, data_out);
+  zt.myZT_Access(meta_instance, inode_ids[meta_counter], 'w', tag_in, tag_out, data_in, data_out);
 
   // update Controller info
   meta_counter += 1;
   data_counter += block_count;
 
-  return meta_counter - 1;
+  return inode_ids[meta_counter - 1];
 }
 
 unsigned char * Controller::LoadFromZT(uint32_t block_id, uint32_t & data_length){

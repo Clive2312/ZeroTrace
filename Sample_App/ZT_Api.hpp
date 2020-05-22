@@ -39,7 +39,7 @@ class myZT{
         uint32_t request_size, response_size;
         uint32_t bulk_batch_size;
         std::string log_file;
-        std::vector<uint32_t> ids;
+
 
         clock_t generate_request_start, generate_request_stop, extract_response_start, extract_response_stop, process_request_start, process_request_stop, generate_request_time, extract_response_time,  process_request_time;
         uint8_t Z;
@@ -70,15 +70,7 @@ myZT::myZT(uint32_t data_size, uint32_t block_size){
   bulk_batch_size = 0;
   Z = 4;
 
-  for(int i = 0; i < block_size; i++){
-      ids.push_back(i + 1);
-  }
-  // shuffle ids
-  std::random_shuffle ( ids.begin(), ids.end());
 
-  for(int i = 0; i < 100; i++){
-      printf("after shuffle: %d\n", ids[i]);
-  }
 
   // Variables for Enclave Public Key retrieval 
   uint32_t max_buff_size = PRIME256V1_KEY_SIZE;
