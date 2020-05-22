@@ -104,6 +104,7 @@ uint32_t Controller::DumpToZT(unsigned char * addr, uint32_t data_length){
   meta[0] = block_count;
   meta[1] = data_length;
   // write data block
+  RandomRequestSource reqsource;
   uint32_t *rs = reqsource.GenerateRandomSequence(block_count, BLOCK_LENGTH-1);
   for(int i = 0; i < block_count; i++){
     memcpy(data_in, addr + i*BLOCK_SIZE, BLOCK_SIZE);
