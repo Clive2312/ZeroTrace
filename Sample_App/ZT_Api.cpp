@@ -195,7 +195,7 @@ int main(int argc, char *argv[]){
   for (int i = 0; i < 1; i++){  
 
     
-    unsigned char arr[800*1024];
+    unsigned char arr[1024*1024];
     memset(arr, 'a', sizeof(arr));
     // for(int i = 0; i < BLOCK_LEN; i++){
     //   strcpy((char *)chunk + i * BLOCK_SIZE, "Hello World233233233!");
