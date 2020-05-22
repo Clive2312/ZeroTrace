@@ -58,7 +58,7 @@ Controller::Controller(){
 
     zt = myZT(BLOCK_SIZE, BLOCK_LENGTH);
 
-    for(int i = 0; i < BLOCK_LENGTH i++){
+    for(int i = 0; i < BLOCK_LENGTH; i++){
       data_ids.push_back(i + 1);
       inode_ids.push_back(i + 1);
     }
