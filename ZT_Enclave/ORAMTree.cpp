@@ -755,7 +755,7 @@ void ORAMTree::PushBlocksFromPathIntoStash(unsigned char* decrypted_path_ptr, ui
       if(!(isBlockDummy(decrypted_path_ptr,gN))) {
         if(getId(decrypted_path_ptr) == id){
           setTreeLabel(decrypted_path_ptr, newleaf);
-           printf("OT DEBUG 2 \n");
+          printf("OT DEBUG 2 \n");
           //NOTE: if write operator, Write new data to block here.
           if(level!=recursion_levels) {
             printf("OT DEBUG 3 \n");
@@ -764,7 +764,7 @@ void ORAMTree::PushBlocksFromPathIntoStash(unsigned char* decrypted_path_ptr, ui
             printf("OT DEBUG 3.5 id: %d, addr: %p\n", position_in_id, decrypted_path_ptr+20);
 
 
-            uint32_t debug_temp = ((uint32_t*)(decrypted_path_ptr+20))[0];
+            uint32_t debug_temp = newleaf;
             printf("OT DEBUG 3.7 \n");
             *nextLeaf = debug_temp;
             printf("OT DEBUG 4 \n");
