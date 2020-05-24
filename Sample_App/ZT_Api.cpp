@@ -70,6 +70,8 @@ Controller::Controller(uint32_t block_size, uint32_t block_length){
 
     data_instance = zt.myZT_New();
 
+    printf("Instance Initialize Done\n");
+
     tag_in = (unsigned char*) malloc (TAG_SIZE);
     tag_out = (unsigned char*) malloc (TAG_SIZE);
     data_in = (unsigned char*) malloc (BLOCK_SIZE);
@@ -200,8 +202,8 @@ int main(int argc, char *argv[]){
 
   // controller testing
   Controller ct = Controller(BLOCK_SIZE, BLOCK_LENGTH);
-  ct.LoadDummy(2);
-  printf("Dummy Load Done\n");
+  // 
+  printf("Controller Initialize Done\n");
 
   unsigned char * chunk = (unsigned char *)malloc(BLOCK_LEN * BLOCK_SIZE);
 

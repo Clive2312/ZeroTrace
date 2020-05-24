@@ -125,12 +125,14 @@ myZT::myZT(uint32_t data_size, uint32_t block_size){
 }
 
 uint32_t myZT::myZT_New(){
+    printf("myZT New\n");
     return ZT_New(MAX_BLOCKS, DATA_SIZE, STASH_SIZE, OBLIVIOUS_FLAG, RECURSION_DATA_SIZE, ORAM_TYPE, Z);
+    printf("myZT Done\n");
 }
  
 
 void myZT::myZT_Access(uint32_t instance_id, uint32_t block_id, char op_type, unsigned char * tag_in, unsigned char * tag_out, unsigned char * data_in, unsigned char * data_out){
-    //printf("Call Access\n");
+    printf("Call Access\n");
     //prepare encrypted request
     uint32_t encrypted_request_size;
     encrypted_request_size = computeCiphertextSize(DATA_SIZE);
@@ -140,19 +142,19 @@ void myZT::myZT_Access(uint32_t instance_id, uint32_t block_id, char op_type, un
 
     //Prepare Request:
     //request = rs[i]
-    //printf("Prepare Request\n");
+    printf("Prepare Request\n");
     //generate_request_start = clock();
     encryptRequest(block_id, op_type, data_in, DATA_SIZE, encrypted_request, tag_in, encrypted_request_size);
     //generate_request_stop = clock();		
 
     //Process Request:
-    //printf("Process Request\n");
+    printf("Process Request\n");
     //process_request_start = clock();		
     ZT_Access(instance_id, ORAM_TYPE, encrypted_request, encrypted_response, tag_in, tag_out, encrypted_request_size, response_size, TAG_SIZE);
     //process_request_stop = clock();				
 
     //Extract Response:
-    //printf("Extract Request\n");
+    printf("Extract Request\n");
     //extract_response_start = clock();
     extractResponse(encrypted_response, tag_out, response_size, data_out);
     //extract_response_stop = clock();
@@ -174,19 +176,19 @@ void myZT::myZT_Bulk_Access(uint32_t instance_id, uint32_t* block_list, uint32_t
 
     //Prepare Request:
     //request = rs[i]
-    //printf("Prepare Bulk Request\n");
+    printf("Prepare Bulk Request\n");
     generate_request_start = clock();
 	encryptBulkReadRequest(block_list, req_counter, batch_size, encrypted_request, tag_in, encrypted_request_size);
     generate_request_stop = clock();	
 
     //Process Request:
-    //printf("Process Bulk Request\n");	
+    printf("Process Bulk Request\n");	
     process_request_start = clock();	
 	ZT_Bulk_Read(instance_id, ORAM_TYPE, batch_size, encrypted_request, encrypted_response, tag_in, tag_out, encrypted_request_size, response_size, TAG_SIZE);
     process_request_stop = clock();	
 
     //Extract Response:
-    //printf("Extract Bulk Request\n");
+    printf("Extract Bulk Request\n");
     extract_response_start = clock();
     extractBulkResponse(encrypted_response, tag_out, response_size, data_out);
     extract_response_stop = clock();	
