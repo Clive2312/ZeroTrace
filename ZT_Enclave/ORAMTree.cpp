@@ -760,7 +760,9 @@ void ORAMTree::PushBlocksFromPathIntoStash(unsigned char* decrypted_path_ptr, ui
             printf("OT DEBUG 3 \n");
             uint32_t* temp_block_ptr = (uint32_t*) getDataPtr(decrypted_path_ptr);
             printf("OT DEBUG 3.5 \n");
-            *nextLeaf = temp_block_ptr[position_in_id];
+            uint32_t debug_temp = temp_block_ptr[position_in_id];
+            printf("OT DEBUG 3.7 \n");
+            *nextLeaf = debug_temp;
             printf("OT DEBUG 4 \n");
             if(*nextLeaf > gN || *nextLeaf < 0) {
               //Pull a random leaf as a temp fix.
