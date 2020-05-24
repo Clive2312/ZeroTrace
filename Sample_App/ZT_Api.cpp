@@ -66,7 +66,7 @@ Controller::Controller(uint32_t block_size, uint32_t block_length){
     std::random_shuffle ( data_ids.begin(), data_ids.end());
     std::random_shuffle ( inode_ids.begin(), inode_ids.end());
 
-    meta_instance = zt.myZT_New();
+    // meta_instance = zt.myZT_New();
 
     data_instance = zt.myZT_New();
 
@@ -129,7 +129,7 @@ uint32_t Controller::DumpToZT(unsigned char * addr, uint32_t data_length){
 
   //write meta block
   memcpy(data_in, meta, sizeof(meta));
-  zt.myZT_Access(meta_instance, inode_ids[meta_counter], 'w', tag_in, tag_out, data_in, data_out);
+  zt.myZT_Access(data_instance, inode_ids[meta_counter], 'w', tag_in, tag_out, data_in, data_out);
 
   // update Controller info
   meta_counter += 1;
@@ -142,7 +142,7 @@ unsigned char * Controller::LoadFromZT(uint32_t block_id, uint32_t & data_length
 
   printf("Load from ZT\n");
   // read from meta
-  zt.myZT_Access(meta_instance, block_id, 'r', tag_in, tag_out, data_in , data_out);
+  zt.myZT_Access(data_instance, block_id, 'r', tag_in, tag_out, data_in , data_out);
   uint32_t* meta = (uint32_t *)data_out;
   int block_length = meta[0];
   data_length = meta[1];
