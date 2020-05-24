@@ -774,8 +774,7 @@ void ORAMTree::PushBlocksFromPathIntoStash(unsigned char* decrypted_path_ptr, ui
               //printf("NEXTLEAF : %d, replaced with: %d\n",nextLeaf,newleaf_nextlevel);
             }
             printf("OT DEBUG 5 \n");
-            //temp_block_ptr[position_in_id] = newleaf_nextlevel;
-            *((uint32_t*)(serialized_block+20)) = newleaf_nextlevel;
+            temp_block_ptr[position_in_id] = newleaf_nextlevel;
           }
         }	
         printf("OT DEBUG 6 \n");
