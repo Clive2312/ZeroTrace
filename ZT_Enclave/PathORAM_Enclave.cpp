@@ -203,12 +203,16 @@ uint32_t PathORAM::PathORAM_Access(char opType, uint32_t id, uint32_t position_i
   unsigned char random_value[ID_SIZE_IN_BYTES];
   sgx_read_rand((unsigned char*) random_value, sizeof(uint32_t));
 
+  printf("Enter PAccess: 1\n");
+
   if(recursion_levels!=1 && level!=recursion_levels-1){
     sampledLeaf= N_level[level+1] + (*((uint32_t *)random_value) % (N_level[level+1]));
   }			
   else{
     sampledLeaf= n + (*((uint32_t *)random_value) % (n));
   }
+
+  printf("Enter PAccess: 2\n");
 
   uint32_t tblock_size, tdata_size;
   if(recursion_levels==1||level==recursion_levels-1) {
@@ -219,6 +223,8 @@ uint32_t PathORAM::PathORAM_Access(char opType, uint32_t id, uint32_t position_i
     tblock_size = recursion_data_size + ADDITIONAL_METADATA_SIZE;				
     tdata_size = recursion_data_size;			
   }
+
+  printf("Enter PAccess: 3\n");
     
   uint32_t path_size = Z*tblock_size*(d);
   uint32_t new_path_hash_size = ((d+1)*HASH_LENGTH);
@@ -238,7 +244,9 @@ uint32_t PathORAM::PathORAM_Access(char opType, uint32_t id, uint32_t position_i
     time_report(PO_FETCH_BLOCK_START, level);
   #endif
 
-  PushBlocksFromPathIntoStash(decrypted_path_ptr, level, tdata_size, tblock_size, id, position_in_id, leaf, &nextLeaf, newleaf, sampledLeaf, newleaf_nextlevel);          
+  PushBlocksFromPathIntoStash(decrypted_path_ptr, level, tdata_size, tblock_size, id, position_in_id, leaf, &nextLeaf, newleaf, sampledLeaf, newleaf_nextlevel);       
+
+  printf("Enter PAccess: 4\n");   
 
   if(oblivious_flag) {                
     if(level == recursion_levels-1){
@@ -249,6 +257,8 @@ uint32_t PathORAM::PathORAM_Access(char opType, uint32_t id, uint32_t position_i
       OAssignNewLabelToBlock(id, position_in_id, level, newleaf, newleaf_nextlevel, &nextLeaf);
     }
   }
+
+  printf("Enter PAccess: 5\n");
 
   #ifdef DETAILED_MICROBENCHMARKER
     time_report(PO_FETCH_BLOCK_END, level);
@@ -272,6 +282,9 @@ uint32_t PathORAM::PathORAM_Access(char opType, uint32_t id, uint32_t position_i
   #endif
 
   PathORAM_RebuildPath(decrypted_path_ptr, tdata_size, tblock_size, leaf, level);
+
+
+  printf("Enter PAccess: 6\n");
  
   #ifdef ACCESS_DEBUG
     printf("Final Path after PathORAM_RebuildPath: \n");
