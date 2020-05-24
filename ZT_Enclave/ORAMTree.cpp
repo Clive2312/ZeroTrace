@@ -574,6 +574,7 @@ void ORAMTree::Initialize() {
   printf("Z=%d, data_size=%d, d_largest=%d, Largest_path_size = %ld\n", Z, data_size, d_largest, largest_path_size);
   encrypted_path = (unsigned char*) malloc (largest_path_size);
   decrypted_path = (unsigned char*) malloc (largest_path_size);
+  printf("decrypted path: %p\n", decrypted_path);
   fetched_path_array = (unsigned char*) malloc (largest_path_size);
   path_hash = (unsigned char*) malloc (HASH_LENGTH*2*(d_largest));
   new_path_hash = (unsigned char*) malloc (HASH_LENGTH*2*(d_largest));
