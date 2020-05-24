@@ -900,6 +900,8 @@ uint32_t ZT_New( uint32_t max_blocks, uint32_t data_size, uint32_t stash_size, u
 
 void ZT_Access(uint32_t instance_id, uint8_t oram_type, unsigned char *encrypted_request, unsigned char *encrypted_response, unsigned char *tag_in, unsigned char* tag_out, uint32_t request_size, uint32_t response_size, uint32_t tag_size) {
 
+  printf("Befor Access\n");
+
   #ifdef DETAILED_MICROBENCHMARKER
     static struct timespec start, end;
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &start);
