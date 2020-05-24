@@ -733,7 +733,7 @@ void ORAMTree::createNewPathHash(unsigned char *path_ptr, unsigned char *old_pat
   }
 }
 
-void ORAMTree::PushBlocksFromPathIntoStash(unsigned char* decrypted_path_ptr, uint8_t level, uint32_t data_size, uint32_t block_size, uint32_t id, uint32_t position_in_id, uint32_t leaf, uint32_t *nextLeaf, uint32_t newleaf, uint32_t sampledLeaf, int32_t newleaf_nextlevel) {
+void ORAMTree::PushBlocksFromPathIntoStash(unsigned char* decrypted_path_ptr, uint8_t level, uint32_t data_size, uint32_t block_size, uint32_t id, int32_t position_in_id, uint32_t leaf, uint32_t *nextLeaf, uint32_t newleaf, uint32_t sampledLeaf, int32_t newleaf_nextlevel) {
   uint32_t d = D_level[level];
   uint32_t i;
   printf("Fetched Path in PushBlocksFromPathIntoStash, data_size = %d : \n", data_size);
@@ -764,9 +764,8 @@ void ORAMTree::PushBlocksFromPathIntoStash(unsigned char* decrypted_path_ptr, ui
             printf("OT DEBUG 3.5 id: %u, addr: %p\n", position_in_id, decrypted_path_ptr+20);
 
 
-            uint32_t debug_temp = newleaf;
-            printf("OT DEBUG 3.7 \n");
-            *nextLeaf = debug_temp;
+            *nextLeaf = temp_block_ptr[position_in_id];
+            
             printf("OT DEBUG 4 \n");
             if(*nextLeaf > gN || *nextLeaf < 0) {
               //Pull a random leaf as a temp fix.
