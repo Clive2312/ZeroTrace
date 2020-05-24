@@ -80,6 +80,7 @@ uint32_t PathORAM::access(uint32_t id, int32_t position_in_id, char opType, uint
     uint32_t newleaf = (N_level[0]) + (*((uint32_t *)random_value) % N_level[0]);
 
     //rec_level = 0, because this is the no recursion_case.
+    printf("Enter Access: 2\n");
 
     #ifdef DETAILED_MICROBENCHMARKER
       time_report(PO_POSMAP_START, 0);
@@ -92,6 +93,8 @@ uint32_t PathORAM::access(uint32_t id, int32_t position_in_id, char opType, uint
       leaf = posmap[id];
       posmap[id] = newleaf;			
     }	
+
+    printf("Enter Access: 3\n");
 
     #ifdef DETAILED_MICROBENCHMARKER
       time_report(PO_POSMAP_END, 0);
@@ -109,8 +112,11 @@ uint32_t PathORAM::access(uint32_t id, int32_t position_in_id, char opType, uint
     #ifdef DETAILED_MICROBENCHMARKER
       time_report(PO_DOWNLOAD_PATH_END, 0);
     #endif
+    printf("Enter Access: 4\n");
 
     PathORAM_Access(opType, id, -1, leaf, newleaf, -1, decrypted_path, path_hash, 0, data_in, data_out);
+
+    printf("Enter Access: 5\n");
     return 0;
   }
   else{
