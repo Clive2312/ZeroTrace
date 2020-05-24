@@ -35,6 +35,8 @@ Note : parameters surrounded by quotes should entered in as is without the quote
 #define MILLION 1E6
 #define HASH_LENGTH 32
 
+#define DEBUG_PRINT
+
 
 #ifdef DETAILED_MICROBENCHMARKER
   typedef struct detailed_microbenchmark_params{
@@ -903,7 +905,15 @@ void ZT_Access(uint32_t instance_id, uint8_t oram_type, unsigned char *encrypted
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &start);
   #endif
 
+  #ifdef DEBUG_PRINT
+      printf("Befor Access\n");
+  #endif
+
     accessInterface(global_eid, instance_id, oram_type, encrypted_request, encrypted_response, tag_in, tag_out, request_size, response_size, tag_size);
+
+  #ifdef DEBUG_PRINT
+      printf("After Access\n");
+  #endif
   
   #ifdef DETAILED_MICROBENCHMARKER
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &end);
