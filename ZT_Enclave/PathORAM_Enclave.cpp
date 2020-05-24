@@ -71,6 +71,8 @@ uint32_t PathORAM::access(uint32_t id, int32_t position_in_id, char opType, uint
   uint32_t newleaf_nextlevel = -1;
   unsigned char random_value[ID_SIZE_IN_BYTES];
 
+  printf("Enter Access: 1\n");
+
   if(recursion_levels ==  1) {
     level = 0;
     sgx_status_t rt = SGX_SUCCESS;
