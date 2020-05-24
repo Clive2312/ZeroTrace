@@ -63,7 +63,7 @@ myZT::myZT(uint32_t data_size, uint32_t block_size){
   DATA_SIZE = data_size;
   MAX_BLOCKS = block_size;
   STASH_SIZE = 150;
-  OBLIVIOUS_FLAG = 1;
+  OBLIVIOUS_FLAG = 0;
   RECURSION_DATA_SIZE = 64;
   //path
   ORAM_TYPE = 0;
