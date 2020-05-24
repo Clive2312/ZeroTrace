@@ -16,7 +16,7 @@
 */
 
 #include "ORAMTree.hpp"
-#define ACCESS_DEBUG
+
 
 ORAMTree::ORAMTree(){
   aes_key = (unsigned char*) malloc (KEY_LENGTH);
@@ -735,6 +735,7 @@ void ORAMTree::createNewPathHash(unsigned char *path_ptr, unsigned char *old_pat
 void ORAMTree::PushBlocksFromPathIntoStash(unsigned char* decrypted_path_ptr, uint8_t level, uint32_t data_size, uint32_t block_size, uint32_t id, uint32_t position_in_id, uint32_t leaf, uint32_t *nextLeaf, uint32_t newleaf, uint32_t sampledLeaf, int32_t newleaf_nextlevel) {
   uint32_t d = D_level[level];
   uint32_t i;
+  printf("Fetched Path in PushBlocksFromPathIntoStash, data_size = %d : \n", data_size);
   #ifdef ACCESS_DEBUG
     printf("Fetched Path in PushBlocksFromPathIntoStash, data_size = %d : \n", data_size);
     //showPath(decrypted_path, Z, d, data_size);
@@ -749,28 +750,34 @@ void ORAMTree::PushBlocksFromPathIntoStash(unsigned char* decrypted_path_ptr, ui
       setId(decrypted_path_ptr, gN);
     }
     else {
+      printf("OT DEBUG 1 \n");
       if(!(isBlockDummy(decrypted_path_ptr,gN))) {
         if(getId(decrypted_path_ptr) == id){
           setTreeLabel(decrypted_path_ptr, newleaf);
-
+           printf("OT DEBUG 2 \n");
           //NOTE: if write operator, Write new data to block here.
           if(level!=recursion_levels) {
+            printf("OT DEBUG 3 \n");
             uint32_t* temp_block_ptr = (uint32_t*) getDataPtr(decrypted_path_ptr);
             *nextLeaf = temp_block_ptr[position_in_id];
+            printf("OT DEBUG 4 \n");
             if(*nextLeaf > gN || *nextLeaf < 0) {
               //Pull a random leaf as a temp fix.
               *nextLeaf = sampledLeaf;
               //printf("NEXTLEAF : %d, replaced with: %d\n",nextLeaf,newleaf_nextlevel);
             }
+            printf("OT DEBUG 5 \n");
             temp_block_ptr[position_in_id] = newleaf_nextlevel;
           }
         }	
+        printf("OT DEBUG 6 \n");
         recursive_stash[level].insert(decrypted_path_ptr);
       } 	
     }
     decrypted_path_ptr+=block_size;
   }	
 
+  printf("End of PushBlocksFromPathIntoStash, Path : \n");
   #ifdef ACCESS_DEBUG
     //printf("End of PushBlocksFromPathIntoStash, Path : \n");
     //showPath_reverse(decrypted_path, Z, d, data_size);
