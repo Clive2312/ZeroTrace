@@ -760,8 +760,8 @@ void ORAMTree::PushBlocksFromPathIntoStash(unsigned char* decrypted_path_ptr, ui
           if(level!=recursion_levels) {
             printf("OT DEBUG 3 \n");
             uint32_t* temp_block_ptr = (uint32_t*) getDataPtr(decrypted_path_ptr);
-            printf("OT DEBUG 3.5 id: %d, addr: %p\n", position_in_id, temp_block_ptr);
-            printf("OT DEBUG 3.5 id: %d, addr: %p\n", position_in_id, decrypted_path_ptr+20);
+            printf("OT DEBUG 3.5 id: %u, addr: %p\n", position_in_id, temp_block_ptr);
+            printf("OT DEBUG 3.5 id: %u, addr: %p\n", position_in_id, decrypted_path_ptr+20);
 
 
             uint32_t debug_temp = newleaf;
@@ -774,7 +774,8 @@ void ORAMTree::PushBlocksFromPathIntoStash(unsigned char* decrypted_path_ptr, ui
               //printf("NEXTLEAF : %d, replaced with: %d\n",nextLeaf,newleaf_nextlevel);
             }
             printf("OT DEBUG 5 \n");
-            temp_block_ptr[position_in_id] = newleaf_nextlevel;
+            //temp_block_ptr[position_in_id] = newleaf_nextlevel;
+            *((uint32_t*)(serialized_block+20)) = newleaf_nextlevel;
           }
         }	
         printf("OT DEBUG 6 \n");
