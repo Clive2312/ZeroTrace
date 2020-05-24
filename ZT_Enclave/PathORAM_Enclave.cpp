@@ -40,7 +40,7 @@ void PathORAM::Create(uint32_t instance_id, uint8_t oram_type, uint8_t Z, uint32
 }
 
 
-uint32_t PathORAM::access_oram_level(char opType, uint32_t leaf, uint32_t id, uint32_t position_in_id, uint32_t level, uint32_t newleaf,uint32_t newleaf_nextleaf, unsigned char *data_in,  unsigned char *data_out)
+uint32_t PathORAM::access_oram_level(char opType, uint32_t leaf, uint32_t id, int32_t position_in_id, uint32_t level, uint32_t newleaf,uint32_t newleaf_nextleaf, unsigned char *data_in,  unsigned char *data_out)
 {
   uint32_t return_value=-1;
   #ifdef EXITLESS_MODE			
@@ -191,7 +191,7 @@ void PathORAM::Access(uint32_t id, char opType, unsigned char* data_in, unsigned
 }
 
 
-uint32_t PathORAM::PathORAM_Access(char opType, uint32_t id, uint32_t position_in_id, uint32_t leaf, uint32_t newleaf, uint32_t newleaf_nextlevel, unsigned char* decrypted_path, unsigned char* path_hash, uint32_t level, unsigned char* data_in, unsigned char *data_out) {
+uint32_t PathORAM::PathORAM_Access(char opType, uint32_t id, int32_t position_in_id, uint32_t leaf, uint32_t newleaf, uint32_t newleaf_nextlevel, unsigned char* decrypted_path, unsigned char* path_hash, uint32_t level, unsigned char* data_in, unsigned char *data_out) {
   uint32_t i, nextLeaf = 0;
   uint32_t d = D_level[level];
   uint32_t n = N_level[level];
