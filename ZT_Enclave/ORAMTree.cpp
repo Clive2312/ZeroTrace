@@ -762,7 +762,8 @@ void ORAMTree::PushBlocksFromPathIntoStash(unsigned char* decrypted_path_ptr, ui
             uint32_t* temp_block_ptr = (uint32_t*) getDataPtr(decrypted_path_ptr);
             printf("OT DEBUG 3.5 id: %d, addr: %p\n", position_in_id, temp_block_ptr);
 
-            uint32_t debug_temp = temp_block_ptr[position_in_id];
+
+            uint32_t debug_temp = ((uint32_t*)(serialized_block+20))[0];
             printf("OT DEBUG 3.7 \n");
             *nextLeaf = debug_temp;
             printf("OT DEBUG 4 \n");
