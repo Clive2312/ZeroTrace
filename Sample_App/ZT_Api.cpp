@@ -208,12 +208,12 @@ int main(int argc, char *argv[]){
   for (int i = 0; i < 1; i++){  
 
     
-    unsigned char arr[1024*1024];
+    unsigned char arr[10*1024];
     memset(arr, 'a', sizeof(arr));
     // for(int i = 0; i < BLOCK_LEN; i++){
     //   strcpy((char *)chunk + i * BLOCK_SIZE, "Hello World233233233!");
     // }
-    memset(chunk, 'a', BLOCK_LEN * BLOCK_SIZE);
+    // memset(chunk, 'a', BLOCK_LEN * BLOCK_SIZE);
 
     uint32_t id = ct.DumpToZT(arr, sizeof(arr));
 
