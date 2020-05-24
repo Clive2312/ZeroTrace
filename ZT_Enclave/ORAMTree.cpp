@@ -571,7 +571,7 @@ void ORAMTree::Initialize() {
   //PerformMemoryAllocations()
 
   uint64_t largest_path_size = Z*(data_size+ADDITIONAL_METADATA_SIZE)*(d_largest);
-  //printf("Z=%d, data_size=%d, d_largest=%d, Largest_path_size = %ld\n", Z, data_size, d_largest, largest_path_size);
+  printf("Z=%d, data_size=%d, d_largest=%d, Largest_path_size = %ld\n", Z, data_size, d_largest, largest_path_size);
   encrypted_path = (unsigned char*) malloc (largest_path_size);
   decrypted_path = (unsigned char*) malloc (largest_path_size);
   fetched_path_array = (unsigned char*) malloc (largest_path_size);
