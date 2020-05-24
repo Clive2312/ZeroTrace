@@ -77,30 +77,30 @@ Controller::Controller(uint32_t block_size, uint32_t block_length){
     data_in = (unsigned char*) malloc (BLOCK_SIZE);
     data_out = (unsigned char*) malloc (BLOCK_SIZE);
 
-    // write dummy
-    int block_count = BLOCK_SIZE/sizeof(uint32_t) - 2;
-    unsigned char * dummy_data = (unsigned char *)malloc(BLOCK_SIZE);
-    int meta[block_count + 2];
-    meta[0] = block_count;
-    meta[1] = block_count*BLOCK_SIZE;
-    // write dummy block
-    memcpy(data_in, dummy_data, BLOCK_SIZE);
-    zt.myZT_Access(data_instance, data_ids[data_counter], 'w', tag_in, tag_out, data_in, data_out);
+    // // write dummy
+    // int block_count = BLOCK_SIZE/sizeof(uint32_t) - 2;
+    // unsigned char * dummy_data = (unsigned char *)malloc(BLOCK_SIZE);
+    // int meta[block_count + 2];
+    // meta[0] = block_count;
+    // meta[1] = block_count*BLOCK_SIZE;
+    // // write dummy block
+    // memcpy(data_in, dummy_data, BLOCK_SIZE);
+    // zt.myZT_Access(data_instance, data_ids[data_counter], 'w', tag_in, tag_out, data_in, data_out);
 
-    //write meta info
-    for(int i = 0; i < block_count; i++){
-      meta[i + 2] = data_counter;
-    }
+    // //write meta info
+    // for(int i = 0; i < block_count; i++){
+    //   meta[i + 2] = data_counter;
+    // }
 
-    //write meta block
-    memcpy(data_in, meta, sizeof(meta));
-    zt.myZT_Access(meta_instance, inode_ids[meta_counter], 'w', tag_in, tag_out, data_in, data_out);
+    // //write meta block
+    // memcpy(data_in, meta, sizeof(meta));
+    // zt.myZT_Access(meta_instance, inode_ids[meta_counter], 'w', tag_in, tag_out, data_in, data_out);
 
-    meta_counter += 1;
-    data_counter += 1;
+    // meta_counter += 1;
+    // data_counter += 1;
 
-    dummy_id = inode_ids[meta_counter - 1];
-    printf("Controller Initialize Done\n");
+    // dummy_id = inode_ids[meta_counter - 1];
+    // printf("Controller Initialize Done\n");
 
 }
 
