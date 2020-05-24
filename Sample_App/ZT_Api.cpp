@@ -194,7 +194,7 @@ int main(int argc, char *argv[]){
 
   uint32_t BLOCK_SIZE = 4096;
 
-  uint32_t BLOCK_LENGTH = 300 * 1024;
+  uint32_t BLOCK_LENGTH =  1024;
 
   uint32_t BLOCK_LEN = 10;
 
