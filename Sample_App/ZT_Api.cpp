@@ -192,7 +192,7 @@ void Controller::LoadDummy(uint32_t N){
 
 int main(int argc, char *argv[]){
 
-  uint32_t BLOCK_SIZE = 4096;
+  uint32_t BLOCK_SIZE = 1024;
 
   uint32_t BLOCK_LENGTH =  1024;
 
@@ -208,7 +208,7 @@ int main(int argc, char *argv[]){
   for (int i = 0; i < 1; i++){  
 
     
-    unsigned char arr[10*1024];
+    unsigned char arr[BLOCK_LEN * BLOCK_SIZE];
     memset(arr, 'a', sizeof(arr));
     // for(int i = 0; i < BLOCK_LEN; i++){
     //   strcpy((char *)chunk + i * BLOCK_SIZE, "Hello World233233233!");
@@ -221,13 +221,13 @@ int main(int argc, char *argv[]){
 
     unsigned char * chunk_out = ct.LoadFromZT(id, length_out);
 
-    #ifdef RESULTS_DEBUG
-      printf("datasize = %d, Data out:", length_out);
-      for(uint32_t j=0; j < BLOCK_LEN*BLOCK_SIZE;j++){
-        printf("%c", chunk_out[j]);
-      }
-      printf("\n");
-    #endif
+    // #ifdef RESULTS_DEBUG
+    //   printf("datasize = %d, Data out:", length_out);
+    //   for(uint32_t j=0; j < BLOCK_LEN*BLOCK_SIZE;j++){
+    //     printf("%c", chunk_out[j]);
+    //   }
+    //   printf("\n");
+    // #endif
     free(chunk_out);
   }
   
