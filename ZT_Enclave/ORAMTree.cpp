@@ -16,6 +16,7 @@
 */
 
 #include "ORAMTree.hpp"
+#define ACCESS_DEBUG
 
 ORAMTree::ORAMTree(){
   aes_key = (unsigned char*) malloc (KEY_LENGTH);
