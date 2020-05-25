@@ -45,23 +45,17 @@ class myZT{
         uint8_t Z;
         FILE *iquery_file;
 
-        myZT(uint32_t data_size, uint32_t block_size);
         myZT();
-        uint32_t myZT_New();
-        void myZT_Access(uint32_t instance_id, uint32_t block_id, char op_type, unsigned char * tag_in, unsigned char * tag_out, unsigned char * data_in, unsigned char * data_out);
-        void myZT_Bulk_Access(uint32_t instance_id, uint32_t* block_list, uint32_t batch_size, unsigned char * tag_in, unsigned char * tag_out, unsigned char * data_in, unsigned char * data_out);
+        uint32_t myZT_New(uint32_t data_size, uint32_t block_size)
+        void myZT_Access(uint32_t instance_id, uint32_t block_id, char op_type, unsigned char * tag_in, unsigned char * tag_out, unsigned char * data_in, unsigned char * data_out, uint32_t BLOCK_SIZE);
+        void myZT_Bulk_Access(uint32_t instance_id, uint32_t* block_list, uint32_t batch_size, unsigned char * tag_in, unsigned char * tag_out, unsigned char * data_in, unsigned char * data_out, uint32_t BLOCK_SIZE);
 
 
 };
 
-myZT::myZT(){
-    Z = 4;
-}
 
-myZT::myZT(uint32_t data_size, uint32_t block_size){
+myZT::myZT(){
   // params
-  DATA_SIZE = data_size;
-  MAX_BLOCKS = block_size;
   STASH_SIZE = 150;
   OBLIVIOUS_FLAG = 1;
   RECURSION_DATA_SIZE = 64;
@@ -124,19 +118,19 @@ myZT::myZT(uint32_t data_size, uint32_t block_size){
   free(serialized_public_key);
 }
 
-uint32_t myZT::myZT_New(){
+uint32_t myZT::myZT_New(uint32_t data_size, uint32_t block_size){
     printf("myZT New\n");
-    return ZT_New(MAX_BLOCKS, DATA_SIZE, STASH_SIZE, OBLIVIOUS_FLAG, RECURSION_DATA_SIZE, ORAM_TYPE, Z);
+    return ZT_New(block_size, data_size, STASH_SIZE, OBLIVIOUS_FLAG, RECURSION_DATA_SIZE, ORAM_TYPE, Z);
     printf("myZT Done\n");
 }
  
 
-void myZT::myZT_Access(uint32_t instance_id, uint32_t block_id, char op_type, unsigned char * tag_in, unsigned char * tag_out, unsigned char * data_in, unsigned char * data_out){
+void myZT::myZT_Access(uint32_t instance_id, uint32_t block_id, char op_type, unsigned char * tag_in, unsigned char * tag_out, unsigned char * data_in, unsigned char * data_out, uint32_t BLOCK_SIZE){
     printf("Call Access\n");
     //prepare encrypted request
     uint32_t encrypted_request_size;
-    encrypted_request_size = computeCiphertextSize(DATA_SIZE);
-    response_size = DATA_SIZE;
+    encrypted_request_size = computeCiphertextSize(BLOCK_SIZE);
+    response_size = BLOCK_SIZE;
     encrypted_request = (unsigned char *) malloc (encrypted_request_size);				
     encrypted_response = (unsigned char *) malloc (response_size);	
 
@@ -144,7 +138,7 @@ void myZT::myZT_Access(uint32_t instance_id, uint32_t block_id, char op_type, un
     //request = rs[i]
     printf("Prepare Request\n");
     //generate_request_start = clock();
-    encryptRequest(block_id, op_type, data_in, DATA_SIZE, encrypted_request, tag_in, encrypted_request_size);
+    encryptRequest(block_id, op_type, data_in, BLOCK_SIZE, encrypted_request, tag_in, encrypted_request_size);
     //generate_request_stop = clock();		
 
     //Process Request:
@@ -164,13 +158,13 @@ void myZT::myZT_Access(uint32_t instance_id, uint32_t block_id, char op_type, un
 }
 
 // 
-void myZT::myZT_Bulk_Access(uint32_t instance_id, uint32_t* block_list, uint32_t batch_size ,unsigned char * tag_in, unsigned char * tag_out, unsigned char * data_in, unsigned char * data_out){
+void myZT::myZT_Bulk_Access(uint32_t instance_id, uint32_t* block_list, uint32_t batch_size ,unsigned char * tag_in, unsigned char * tag_out, unsigned char * data_in, unsigned char * data_out, uint32_t BLOCK_SIZE){
     //printf("Call Bulk Access\n");
     //prepare encrypted request
     uint32_t req_counter = 0;	
     uint32_t encrypted_request_size;
     encrypted_request_size = computeBulkRequestsCiphertextSize(batch_size);
-    response_size = DATA_SIZE * batch_size;
+    response_size = BLOCK_SIZE * batch_size;
     encrypted_request = (unsigned char *) malloc (encrypted_request_size);				
     encrypted_response = (unsigned char *) malloc (response_size);	
 

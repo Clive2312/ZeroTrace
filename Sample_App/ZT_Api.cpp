@@ -16,6 +16,7 @@
 * inode: length block_id | 4 | 4 | ... 
 * 
 */
+myZT zt = myZT();
 
 class Controller{
   public:
@@ -34,7 +35,6 @@ class Controller{
     std::vector<uint32_t> inode_ids;
 
     unsigned char * tag_in, *tag_out, *data_in, *data_out;
-    myZT zt;
 
     Controller(uint32_t block_size, uint32_t block_length);
     ~Controller();
@@ -56,7 +56,7 @@ Controller::Controller(uint32_t block_size, uint32_t block_length){
 
     BLOCK_SIZE = block_size;
 
-    zt = myZT(BLOCK_SIZE, BLOCK_LENGTH);
+    
 
     for(int i = 0; i < BLOCK_LENGTH; i++){
       data_ids.push_back(i + 1);
@@ -66,9 +66,9 @@ Controller::Controller(uint32_t block_size, uint32_t block_length){
     std::random_shuffle ( data_ids.begin(), data_ids.end());
     std::random_shuffle ( inode_ids.begin(), inode_ids.end());
 
-    meta_instance = zt.myZT_New();
+    meta_instance = zt.myZT_New(block_size, block_length);
 
-    data_instance = zt.myZT_New();
+    data_instance = zt.myZT_New(block_size, block_length);
 
     printf("Instance Initialize Done\n");
 
@@ -123,13 +123,13 @@ uint32_t Controller::DumpToZT(unsigned char * addr, uint32_t data_length){
     memcpy(data_in, addr + i*BLOCK_SIZE, BLOCK_SIZE);
     // zt.myZT_Access(data_instance, rs[i], 'w', tag_in, tag_out, data_in, data_out);
     // meta[i + 2] = rs[i];
-    zt.myZT_Access(data_instance, data_ids[data_counter + i], 'w', tag_in, tag_out, data_in, data_out);
+    zt.myZT_Access(data_instance, data_ids[data_counter + i], 'w', tag_in, tag_out, data_in, data_out, BLOCK_SIZE);
     meta[i + 2] = data_ids[data_counter + i];
   }
 
   //write meta block
   memcpy(data_in, meta, sizeof(meta));
-  zt.myZT_Access(meta_instance, inode_ids[meta_counter], 'w', tag_in, tag_out, data_in, data_out);
+  zt.myZT_Access(meta_instance, inode_ids[meta_counter], 'w', tag_in, tag_out, data_in, data_out, BLOCK_SIZE);
 
   // update Controller info
   meta_counter += 1;
@@ -142,7 +142,7 @@ unsigned char * Controller::LoadFromZT(uint32_t block_id, uint32_t & data_length
 
   printf("Load from ZT\n");
   // read from meta
-  zt.myZT_Access(meta_instance, block_id, 'r', tag_in, tag_out, data_in , data_out);
+  zt.myZT_Access(meta_instance, block_id, 'r', tag_in, tag_out, data_in , data_out, BLOCK_SIZE);
   uint32_t* meta = (uint32_t *)data_out;
   int block_length = meta[0];
   data_length = meta[1];
@@ -156,7 +156,7 @@ unsigned char * Controller::LoadFromZT(uint32_t block_id, uint32_t & data_length
   unsigned char * bulk_data_out = (unsigned char *)malloc(block_length * BLOCK_SIZE);
 
   // bulk read block
-  zt.myZT_Bulk_Access(data_instance, meta + 2, block_length, tag_in, tag_out, data_in, bulk_data_out);
+  zt.myZT_Bulk_Access(data_instance, meta + 2, block_length, tag_in, tag_out, data_in, bulk_data_out, BLOCK_SIZE);
   memcpy(data, bulk_data_out, data_length);
   free(bulk_data_out);
   return data;
@@ -169,7 +169,7 @@ void Controller::LoadDummy(uint32_t N){
   }
   //printf("Load from ZT\n");
   // read from meta
-  zt.myZT_Access(meta_instance, dummy_id, 'r', tag_in, tag_out, data_in , data_out);
+  zt.myZT_Access(meta_instance, dummy_id, 'r', tag_in, tag_out, data_in , data_out, BLOCK_SIZE);
   uint32_t* meta = (uint32_t *)data_out;
   int block_length = N;
   int data_length = N * BLOCK_SIZE;
@@ -183,7 +183,7 @@ void Controller::LoadDummy(uint32_t N){
   unsigned char * bulk_data_out = (unsigned char *)malloc(block_length * BLOCK_SIZE);
 
   // bulk read block
-  zt.myZT_Bulk_Access(data_instance, meta + 2, N, tag_in, tag_out, data_in, bulk_data_out);
+  zt.myZT_Bulk_Access(data_instance, meta + 2, N, tag_in, tag_out, data_in, bulk_data_out, BLOCK_SIZE);
   memcpy(data, bulk_data_out, data_length);
   free(bulk_data_out);
   free(data);
@@ -202,12 +202,13 @@ int main(int argc, char *argv[]){
 
   // controller testing
   Controller ct = Controller(BLOCK_SIZE, BLOCK_LENGTH);
+  Controller ct2 = Controller(BLOCK_SIZE, BLOCK_LENGTH);
   // 
   printf("Controller Initialize Done\n");
 
   unsigned char * chunk = (unsigned char *)malloc(BLOCK_LEN * BLOCK_SIZE);
 
-  for (int i = 0; i < 1; i++){  
+  for (int i = 0; i < 2; i++){  
 
     
     unsigned char arr[BLOCK_LEN * 1024];
@@ -216,13 +217,22 @@ int main(int argc, char *argv[]){
     //   strcpy((char *)chunk + i * BLOCK_SIZE, "Hello World233233233!");
     // }
     // memset(chunk, 'a', BLOCK_LEN * BLOCK_SIZE);
+    unsigned char * chunk_out;
+    if(i == 0){
+      uint32_t id = ct.DumpToZT(arr, sizeof(arr));
 
-    uint32_t id = ct.DumpToZT(arr, sizeof(arr));
+      uint32_t length_out = 0;
 
-    uint32_t length_out = 0;
+      chunk_out = ct.LoadFromZT(id, length_out);
+    }
+    else{
+      uint32_t id = ct2.DumpToZT(arr, sizeof(arr));
 
-    unsigned char * chunk_out = ct.LoadFromZT(id, length_out);
+      uint32_t length_out = 0;
 
+      chunk_out = ct2.LoadFromZT(id, length_out);
+
+    }
     #ifdef RESULTS_DEBUG
       printf("datasize = %d, Data out:", length_out);
       for(uint32_t j=0; j < BLOCK_LEN*BLOCK_SIZE;j++){
