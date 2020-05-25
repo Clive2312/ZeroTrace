@@ -218,17 +218,18 @@ int main(int argc, char *argv[]){
     // }
     // memset(chunk, 'a', BLOCK_LEN * BLOCK_SIZE);
     unsigned char * chunk_out;
+    uint32_t length_out;
     if(i == 0){
       uint32_t id = ct.DumpToZT(arr, sizeof(arr));
 
-      uint32_t length_out = 0;
+      length_out = 0;
 
       chunk_out = ct.LoadFromZT(id, length_out);
     }
     else{
       uint32_t id = ct2.DumpToZT(arr, sizeof(arr));
 
-      uint32_t length_out = 0;
+      length_out = 0;
 
       chunk_out = ct2.LoadFromZT(id, length_out);
 
