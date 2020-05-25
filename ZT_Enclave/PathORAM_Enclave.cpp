@@ -40,7 +40,7 @@ void PathORAM::Create(uint32_t instance_id, uint8_t oram_type, uint8_t Z, uint32
 }
 
 
-uint32_t PathORAM::access_oram_level(char opType, uint32_t leaf, uint32_t id, int32_t position_in_id, uint32_t level, uint32_t newleaf,uint32_t newleaf_nextleaf, unsigned char *data_in,  unsigned char *data_out)
+uint32_t PathORAM::access_oram_level(char opType, uint32_t leaf, uint32_t id, uint32_t position_in_id, uint32_t level, uint32_t newleaf,uint32_t newleaf_nextleaf, unsigned char *data_in,  unsigned char *data_out)
 {
   uint32_t return_value=-1;
   #ifdef EXITLESS_MODE			
@@ -71,8 +71,6 @@ uint32_t PathORAM::access(uint32_t id, int32_t position_in_id, char opType, uint
   uint32_t newleaf_nextlevel = -1;
   unsigned char random_value[ID_SIZE_IN_BYTES];
 
-  printf("Enter Access: 1\n");
-
   if(recursion_levels ==  1) {
     level = 0;
     sgx_status_t rt = SGX_SUCCESS;
@@ -80,7 +78,6 @@ uint32_t PathORAM::access(uint32_t id, int32_t position_in_id, char opType, uint
     uint32_t newleaf = (N_level[0]) + (*((uint32_t *)random_value) % N_level[0]);
 
     //rec_level = 0, because this is the no recursion_case.
-    printf("Enter Access: 2\n");
 
     #ifdef DETAILED_MICROBENCHMARKER
       time_report(PO_POSMAP_START, 0);
@@ -93,8 +90,6 @@ uint32_t PathORAM::access(uint32_t id, int32_t position_in_id, char opType, uint
       leaf = posmap[id];
       posmap[id] = newleaf;			
     }	
-
-    printf("Enter Access: 3\n");
 
     #ifdef DETAILED_MICROBENCHMARKER
       time_report(PO_POSMAP_END, 0);
@@ -112,11 +107,8 @@ uint32_t PathORAM::access(uint32_t id, int32_t position_in_id, char opType, uint
     #ifdef DETAILED_MICROBENCHMARKER
       time_report(PO_DOWNLOAD_PATH_END, 0);
     #endif
-    printf("Enter Access: 4\n");
 
     PathORAM_Access(opType, id, -1, leaf, newleaf, -1, decrypted_path, path_hash, 0, data_in, data_out);
-
-    printf("Enter Access: 5\n");
     return 0;
   }
   else{
@@ -191,7 +183,7 @@ void PathORAM::Access(uint32_t id, char opType, unsigned char* data_in, unsigned
 }
 
 
-uint32_t PathORAM::PathORAM_Access(char opType, uint32_t id, int32_t position_in_id, uint32_t leaf, uint32_t newleaf, uint32_t newleaf_nextlevel, unsigned char* decrypted_path, unsigned char* path_hash, uint32_t level, unsigned char* data_in, unsigned char *data_out) {
+uint32_t PathORAM::PathORAM_Access(char opType, uint32_t id, uint32_t position_in_id, uint32_t leaf, uint32_t newleaf, uint32_t newleaf_nextlevel, unsigned char* decrypted_path, unsigned char* path_hash, uint32_t level, unsigned char* data_in, unsigned char *data_out) {
   uint32_t i, nextLeaf = 0;
   uint32_t d = D_level[level];
   uint32_t n = N_level[level];
@@ -203,16 +195,12 @@ uint32_t PathORAM::PathORAM_Access(char opType, uint32_t id, int32_t position_in
   unsigned char random_value[ID_SIZE_IN_BYTES];
   sgx_read_rand((unsigned char*) random_value, sizeof(uint32_t));
 
-  printf("Enter PAccess: 1\n");
-
   if(recursion_levels!=1 && level!=recursion_levels-1){
     sampledLeaf= N_level[level+1] + (*((uint32_t *)random_value) % (N_level[level+1]));
   }			
   else{
     sampledLeaf= n + (*((uint32_t *)random_value) % (n));
   }
-
-  printf("Enter PAccess: 2\n");
 
   uint32_t tblock_size, tdata_size;
   if(recursion_levels==1||level==recursion_levels-1) {
@@ -223,8 +211,6 @@ uint32_t PathORAM::PathORAM_Access(char opType, uint32_t id, int32_t position_in
     tblock_size = recursion_data_size + ADDITIONAL_METADATA_SIZE;				
     tdata_size = recursion_data_size;			
   }
-
-  printf("Enter PAccess: 3\n");
     
   uint32_t path_size = Z*tblock_size*(d);
   uint32_t new_path_hash_size = ((d+1)*HASH_LENGTH);
@@ -244,9 +230,7 @@ uint32_t PathORAM::PathORAM_Access(char opType, uint32_t id, int32_t position_in
     time_report(PO_FETCH_BLOCK_START, level);
   #endif
 
-  PushBlocksFromPathIntoStash(decrypted_path_ptr, level, tdata_size, tblock_size, id, position_in_id, leaf, &nextLeaf, newleaf, sampledLeaf, newleaf_nextlevel);       
-
-  printf("Enter PAccess: 4\n");   
+  PushBlocksFromPathIntoStash(decrypted_path_ptr, level, tdata_size, tblock_size, id, position_in_id, leaf, &nextLeaf, newleaf, sampledLeaf, newleaf_nextlevel);          
 
   if(oblivious_flag) {                
     if(level == recursion_levels-1){
@@ -257,8 +241,6 @@ uint32_t PathORAM::PathORAM_Access(char opType, uint32_t id, int32_t position_in
       OAssignNewLabelToBlock(id, position_in_id, level, newleaf, newleaf_nextlevel, &nextLeaf);
     }
   }
-
-  printf("Enter PAccess: 5\n");
 
   #ifdef DETAILED_MICROBENCHMARKER
     time_report(PO_FETCH_BLOCK_END, level);
@@ -282,9 +264,6 @@ uint32_t PathORAM::PathORAM_Access(char opType, uint32_t id, int32_t position_in
   #endif
 
   PathORAM_RebuildPath(decrypted_path_ptr, tdata_size, tblock_size, leaf, level);
-
-
-  printf("Enter PAccess: 6\n");
  
   #ifdef ACCESS_DEBUG
     printf("Final Path after PathORAM_RebuildPath: \n");

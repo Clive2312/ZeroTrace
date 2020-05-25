@@ -196,14 +196,11 @@ void accessInterface(uint32_t instance_id, uint8_t oram_type, unsigned char *enc
   //TODO : Would be nice to remove this dynamic allocation.
   PathORAM *poram_current_instance;
   CircuitORAM *coram_current_instance;
-  printf("Access Inteface: 1 \n");
 
   unsigned char *data_in, *data_out, *request, *request_ptr;
   uint32_t id, opType;
   request = (unsigned char *) malloc (encrypted_request_size);
   data_out = (unsigned char *) malloc (response_size);	
-
-  printf("Access Inteface: 2 \n");
 
   sgx_status_t status = SGX_SUCCESS;
   status = sgx_rijndael128GCM_decrypt((const sgx_aes_gcm_128bit_key_t *) SHARED_AES_KEY, (const uint8_t *) encrypted_request,
@@ -221,14 +218,10 @@ void accessInterface(uint32_t instance_id, uint8_t oram_type, unsigned char *enc
   */
 
   //Extract Request Id and OpType
-  printf("Access Inteface: 3 \n");
-
   opType = request[0];
   request_ptr = request+1;
   memcpy(&id, request_ptr, ID_SIZE_IN_BYTES); 
   data_in = request_ptr+ID_SIZE_IN_BYTES;
-
-  printf("Access Inteface: 4 \n");
 
   if(oram_type==0){
     poram_current_instance = poram_instances[instance_id];
@@ -238,8 +231,6 @@ void accessInterface(uint32_t instance_id, uint8_t oram_type, unsigned char *enc
     coram_current_instance = coram_instances[instance_id];
     coram_current_instance->Access(id, opType, data_in, data_out);
   }
-
-  printf("Access Inteface: 5 \n");
 
   //Encrypt Response
   status = sgx_rijndael128GCM_encrypt((const sgx_aes_gcm_128bit_key_t *) SHARED_AES_KEY, data_out, response_size,
