@@ -194,9 +194,9 @@ void Controller::LoadDummy(uint32_t N){
 
 int main(int argc, char *argv[]){
 
-  uint32_t BLOCK_SIZE = 256*1024;
+  uint32_t BLOCK_SIZE = 1024;
 
-  uint32_t BLOCK_LENGTH =  1024;
+  uint32_t BLOCK_LENGTH =  256 * 1024;
 
   uint32_t BLOCK_LEN = 10;
 
