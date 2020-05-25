@@ -223,13 +223,13 @@ int main(int argc, char *argv[]){
 
     unsigned char * chunk_out = ct.LoadFromZT(id, length_out);
 
-    // #ifdef RESULTS_DEBUG
-    //   printf("datasize = %d, Data out:", length_out);
-    //   for(uint32_t j=0; j < BLOCK_LEN*BLOCK_SIZE;j++){
-    //     printf("%c", chunk_out[j]);
-    //   }
-    //   printf("\n");
-    // #endif
+    #ifdef RESULTS_DEBUG
+      printf("datasize = %d, Data out:", length_out);
+      for(uint32_t j=0; j < BLOCK_LEN*BLOCK_SIZE;j++){
+        printf("%c", chunk_out[j]);
+      }
+      printf("\n");
+    #endif
     free(chunk_out);
   }
   
