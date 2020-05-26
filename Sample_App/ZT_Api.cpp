@@ -43,6 +43,7 @@ class Controller{
     // return length
     unsigned char * LoadFromZT(uint32_t block_id, uint32_t & data_length);
     void LoadDummy(uint32_t N);
+    void test(uint32_t size, uint32_t len);
 
 };
 
@@ -69,6 +70,8 @@ Controller::Controller(uint32_t block_size, uint32_t block_length){
     meta_instance = zt.myZT_New(block_size, block_length);
 
     data_instance = zt.myZT_New(block_size, block_length);
+
+    
 
     printf("Instance Initialize Done\n");
 
@@ -190,61 +193,71 @@ void Controller::LoadDummy(uint32_t N){
   return;
 }
 
+void Controller::test(uint32_t size, uint32_t len){
+  for(int i = 0; i < len; i ++){
+    zt.myZT_Access(data_instance, data_ids[(data_counter + i) % BLOCK_LENGTH], 'w', tag_in, tag_out, data_in, data_out, BLOCK_SIZE);
+  }
+}
+
 
 
 int main(int argc, char *argv[]){
 
-  uint32_t BLOCK_SIZE = 1024;
+  uint32_t BLOCK_SIZE = 256;
 
-  uint32_t BLOCK_LENGTH =  256 * 1024;
+  uint32_t BLOCK_LENGTH =  64 * 1024;
 
   uint32_t BLOCK_LEN = 10;
 
   // controller testing
   Controller ct = Controller(BLOCK_SIZE, BLOCK_LENGTH);
-  Controller ct2 = Controller(BLOCK_SIZE, BLOCK_LENGTH);
+  // Controller ct2 = Controller(BLOCK_SIZE, BLOCK_LENGTH);
   // 
   printf("Controller Initialize Done\n");
 
-  unsigned char * chunk = (unsigned char *)malloc(BLOCK_LEN * BLOCK_SIZE);
+  ct.test(0, 10000);
 
-  for (int i = 0; i < 2; i++){  
+  printf("Test Done\n");
+
+  // unsigned char * chunk = (unsigned char *)malloc(BLOCK_LEN * BLOCK_SIZE);
+
+  // for (int i = 0; i < 2; i++){  
 
     
-    unsigned char arr[BLOCK_LEN * 1024];
-    memset(arr, 'a', sizeof(arr));
-    // for(int i = 0; i < BLOCK_LEN; i++){
-    //   strcpy((char *)chunk + i * BLOCK_SIZE, "Hello World233233233!");
-    // }
-    // memset(chunk, 'a', BLOCK_LEN * BLOCK_SIZE);
-    unsigned char * chunk_out;
-    uint32_t length_out;
-    if(i == 0){
-      uint32_t id = ct.DumpToZT(arr, sizeof(arr));
+  //   unsigned char arr[BLOCK_LEN * 1024];
+  //   memset(arr, 'a', sizeof(arr));
+  //   // for(int i = 0; i < BLOCK_LEN; i++){
+  //   //   strcpy((char *)chunk + i * BLOCK_SIZE, "Hello World233233233!");
+  //   // }
+  //   // memset(chunk, 'a', BLOCK_LEN * BLOCK_SIZE);
+  //   unsigned char * chunk_out;
+  //   uint32_t length_out;
+  //   if(i == 0){
+  //     uint32_t id = ct.DumpToZT(arr, sizeof(arr));
 
-      length_out = 0;
+  //     length_out = 0;
 
-      chunk_out = ct.LoadFromZT(id, length_out);
-    }
-    else{
-      uint32_t id = ct2.DumpToZT(arr, sizeof(arr));
+  //     chunk_out = ct.LoadFromZT(id, length_out);
+  //   }
+  //   else{
+  //     uint32_t id = ct2.DumpToZT(arr, sizeof(arr));
 
-      length_out = 0;
+  //     length_out = 0;
 
-      chunk_out = ct2.LoadFromZT(id, length_out);
+  //     chunk_out = ct2.LoadFromZT(id, length_out);
 
-    }
-    #ifdef RESULTS_DEBUG
-      printf("datasize = %d, Data out:", length_out);
-      for(uint32_t j=0; j < BLOCK_LEN*BLOCK_SIZE;j++){
-        printf("%c", chunk_out[j]);
-      }
-      printf("\n");
-    #endif
-    free(chunk_out);
-  }
+  //   }
+  //   #ifdef RESULTS_DEBUG
+  //     printf("datasize = %d, Data out:", length_out);
+  //     for(uint32_t j=0; j < BLOCK_LEN*BLOCK_SIZE;j++){
+  //       printf("%c", chunk_out[j]);
+  //     }
+  //     printf("\n");
+  //   #endif
+  //   free(chunk_out);
+  // }
   
-  free(chunk);
+  // free(chunk);
 
   return 0;
 }
