@@ -214,12 +214,12 @@ int main(int argc, char *argv[]){
   // Controller ct2 = Controller(BLOCK_SIZE, BLOCK_LENGTH);
   // 
   printf("Controller Initialize Done\n");
-  
+
   clock_t generate_request_start, generate_request_stop;
 
   generate_request_start = clock();
 
-  ct.test(0, 10000);
+  ct.test(0, 100000);
 
   generate_request_stop = clock();
 
