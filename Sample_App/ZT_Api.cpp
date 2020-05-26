@@ -211,7 +211,7 @@ int main(int argc, char *argv[]){
   uint32_t BLOCK_LEN = 10;
 
   // controller testing
-  Controller ct = Controller(BLOCK_SIZE, BLOCK_LENGTH);
+  
   // Controller ct2 = Controller(BLOCK_SIZE, BLOCK_LENGTH);
   // 
   printf("Controller Initialize Done\n");
@@ -220,7 +220,7 @@ int main(int argc, char *argv[]){
 
   generate_request_start = clock();
 
-  ct.test(0, 1000);
+  Controller ct = Controller(BLOCK_SIZE, BLOCK_LENGTH);
 
   generate_request_stop = clock();
 
