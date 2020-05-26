@@ -204,7 +204,7 @@ void Controller::test(uint32_t size, uint32_t len){
 
 int main(int argc, char *argv[]){
 
-  uint32_t BLOCK_SIZE = 256;
+  uint32_t BLOCK_SIZE = 512;
 
   uint32_t BLOCK_LENGTH =  64 * 1024;
 
@@ -220,7 +220,7 @@ int main(int argc, char *argv[]){
 
   generate_request_start = clock();
 
-  ct.test(0, 1000000);
+  ct.test(0, 1000);
 
   generate_request_stop = clock();
 
