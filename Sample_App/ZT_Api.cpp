@@ -196,6 +196,7 @@ void Controller::LoadDummy(uint32_t N){
 void Controller::test(uint32_t size, uint32_t len){
   for(int i = 0; i < len; i ++){
     zt.myZT_Access(data_instance, data_ids[(data_counter + i) % BLOCK_LENGTH], 'w', tag_in, tag_out, data_in, data_out, BLOCK_SIZE);
+    printf("current: %d\n", (data_counter + i) % BLOCK_LENGTH);
   }
 }
 
