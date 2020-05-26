@@ -214,10 +214,16 @@ int main(int argc, char *argv[]){
   // Controller ct2 = Controller(BLOCK_SIZE, BLOCK_LENGTH);
   // 
   printf("Controller Initialize Done\n");
+  
+  clock_t generate_request_start, generate_request_stop;
+
+  generate_request_start = clock();
 
   ct.test(0, 10000);
 
-  printf("Test Done\n");
+  generate_request_stop = clock();
+
+  printf("Test time: %f\n", double(generate_request_stop - generate_request_start)/double(CLOCKS_PER_MS));
 
   // unsigned char * chunk = (unsigned char *)malloc(BLOCK_LEN * BLOCK_SIZE);
 
