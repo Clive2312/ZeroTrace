@@ -220,7 +220,7 @@ int main(int argc, char *argv[]){
 
   generate_request_start = clock();
 
-  ct.test(0, 100000);
+  ct.test(0, 1000000);
 
   generate_request_stop = clock();
 
