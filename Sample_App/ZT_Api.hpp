@@ -170,19 +170,19 @@ void myZT::myZT_Bulk_Access(uint32_t instance_id, uint32_t* block_list, uint32_t
 
     //Prepare Request:
     //request = rs[i]
-    printf("Prepare Bulk Request\n");
+    // printf("Prepare Bulk Request\n");
     generate_request_start = clock();
 	encryptBulkReadRequest(block_list, req_counter, batch_size, encrypted_request, tag_in, encrypted_request_size);
     generate_request_stop = clock();	
 
     //Process Request:
-    printf("Process Bulk Request\n");	
+    // printf("Process Bulk Request\n");	
     process_request_start = clock();	
 	ZT_Bulk_Read(instance_id, ORAM_TYPE, batch_size, encrypted_request, encrypted_response, tag_in, tag_out, encrypted_request_size, response_size, TAG_SIZE);
     process_request_stop = clock();	
 
     //Extract Response:
-    printf("Extract Bulk Request\n");
+    // printf("Extract Bulk Request\n");
     extract_response_start = clock();
     extractBulkResponse(encrypted_response, tag_out, response_size, data_out);
     extract_response_stop = clock();	
@@ -191,7 +191,7 @@ void myZT::myZT_Bulk_Access(uint32_t instance_id, uint32_t* block_list, uint32_t
     generate_request_time = generate_request_stop - generate_request_start;
     process_request_time = process_request_stop - process_request_start;			
     extract_response_time = extract_response_stop - extract_response_start;
-    printf("Timing: %f\t%f\t%f\n", double(generate_request_time)/double(CLOCKS_PER_MS), double(process_request_time)/double(CLOCKS_PER_MS), double(extract_response_time)/double(CLOCKS_PER_MS));
+    // printf("Timing: %f\t%f\t%f\n", double(generate_request_time)/double(CLOCKS_PER_MS), double(process_request_time)/double(CLOCKS_PER_MS), double(extract_response_time)/double(CLOCKS_PER_MS));
 
 
     free(encrypted_request);
