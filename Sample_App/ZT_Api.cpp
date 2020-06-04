@@ -88,7 +88,7 @@ Controller::Controller(uint32_t block_size, uint32_t block_length){
     meta[1] = block_count*BLOCK_SIZE;
     // write dummy block
     memcpy(data_in, dummy_data, BLOCK_SIZE);
-    zt.myZT_Access(data_instance, data_ids[data_counter], 'w', tag_in, tag_out, data_in, data_out);
+    zt.myZT_Access(data_instance, data_ids[data_counter], 'w', tag_in, tag_out, data_in, data_out, BLOCK_SIZE);
 
     //write meta info
     for(int i = 0; i < block_count; i++){
@@ -97,7 +97,7 @@ Controller::Controller(uint32_t block_size, uint32_t block_length){
 
     //write meta block
     memcpy(data_in, meta, sizeof(meta));
-    zt.myZT_Access(meta_instance, inode_ids[meta_counter], 'w', tag_in, tag_out, data_in, data_out);
+    zt.myZT_Access(meta_instance, inode_ids[meta_counter], 'w', tag_in, tag_out, data_in, data_out, BLOCK_SIZE);
 
     meta_counter += 1;
     data_counter += 1;
