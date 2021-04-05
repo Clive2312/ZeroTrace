@@ -204,7 +204,7 @@ typedef struct ms_ecall_pointer_string_t {
 } ms_ecall_pointer_string_t;
 
 typedef struct ms_ecall_pointer_string_const_t {
-	char* ms_str;
+	const char* ms_str;
 	size_t ms_str_len;
 } ms_ecall_pointer_string_const_t;
 
@@ -257,7 +257,7 @@ typedef struct ms_ecall_increase_counter_t {
 } ms_ecall_increase_counter_t;
 
 typedef struct ms_ocall_print_string_t {
-	char* ms_str;
+	const char* ms_str;
 } ms_ocall_print_string_t;
 
 typedef struct ms_getOutsidePtr_OCALL_t {
@@ -365,7 +365,7 @@ typedef struct ms_ocall_pointer_in_out_t {
 typedef struct ms_memccpy_t {
 	void* ms_retval;
 	void* ms_dest;
-	void* ms_src;
+	const void* ms_src;
 	int ms_val;
 	size_t ms_len;
 } ms_memccpy_t;
@@ -378,30 +378,30 @@ typedef struct ms_sgx_oc_cpuidex_t {
 
 typedef struct ms_sgx_thread_wait_untrusted_event_ocall_t {
 	int ms_retval;
-	void* ms_self;
+	const void* ms_self;
 } ms_sgx_thread_wait_untrusted_event_ocall_t;
 
 typedef struct ms_sgx_thread_set_untrusted_event_ocall_t {
 	int ms_retval;
-	void* ms_waiter;
+	const void* ms_waiter;
 } ms_sgx_thread_set_untrusted_event_ocall_t;
 
 typedef struct ms_sgx_thread_setwait_untrusted_events_ocall_t {
 	int ms_retval;
-	void* ms_waiter;
-	void* ms_self;
+	const void* ms_waiter;
+	const void* ms_self;
 } ms_sgx_thread_setwait_untrusted_events_ocall_t;
 
 typedef struct ms_sgx_thread_set_multiple_untrusted_events_ocall_t {
 	int ms_retval;
-	void** ms_waiters;
+	const void** ms_waiters;
 	size_t ms_total;
 } ms_sgx_thread_set_multiple_untrusted_events_ocall_t;
 
 static sgx_status_t SGX_CDECL Enclave_ocall_print_string(void* pms)
 {
 	ms_ocall_print_string_t* ms = SGX_CAST(ms_ocall_print_string_t*, pms);
-	ocall_print_string((const char*)ms->ms_str);
+	ocall_print_string(ms->ms_str);
 
 	return SGX_SUCCESS;
 }
@@ -513,7 +513,7 @@ static sgx_status_t SGX_CDECL Enclave_ocall_pointer_in_out(void* pms)
 static sgx_status_t SGX_CDECL Enclave_memccpy(void* pms)
 {
 	ms_memccpy_t* ms = SGX_CAST(ms_memccpy_t*, pms);
-	ms->ms_retval = memccpy(ms->ms_dest, (const void*)ms->ms_src, ms->ms_val, ms->ms_len);
+	ms->ms_retval = memccpy(ms->ms_dest, ms->ms_src, ms->ms_val, ms->ms_len);
 
 	return SGX_SUCCESS;
 }
@@ -536,7 +536,7 @@ static sgx_status_t SGX_CDECL Enclave_sgx_oc_cpuidex(void* pms)
 static sgx_status_t SGX_CDECL Enclave_sgx_thread_wait_untrusted_event_ocall(void* pms)
 {
 	ms_sgx_thread_wait_untrusted_event_ocall_t* ms = SGX_CAST(ms_sgx_thread_wait_untrusted_event_ocall_t*, pms);
-	ms->ms_retval = sgx_thread_wait_untrusted_event_ocall((const void*)ms->ms_self);
+	ms->ms_retval = sgx_thread_wait_untrusted_event_ocall(ms->ms_self);
 
 	return SGX_SUCCESS;
 }
@@ -544,7 +544,7 @@ static sgx_status_t SGX_CDECL Enclave_sgx_thread_wait_untrusted_event_ocall(void
 static sgx_status_t SGX_CDECL Enclave_sgx_thread_set_untrusted_event_ocall(void* pms)
 {
 	ms_sgx_thread_set_untrusted_event_ocall_t* ms = SGX_CAST(ms_sgx_thread_set_untrusted_event_ocall_t*, pms);
-	ms->ms_retval = sgx_thread_set_untrusted_event_ocall((const void*)ms->ms_waiter);
+	ms->ms_retval = sgx_thread_set_untrusted_event_ocall(ms->ms_waiter);
 
 	return SGX_SUCCESS;
 }
@@ -552,7 +552,7 @@ static sgx_status_t SGX_CDECL Enclave_sgx_thread_set_untrusted_event_ocall(void*
 static sgx_status_t SGX_CDECL Enclave_sgx_thread_setwait_untrusted_events_ocall(void* pms)
 {
 	ms_sgx_thread_setwait_untrusted_events_ocall_t* ms = SGX_CAST(ms_sgx_thread_setwait_untrusted_events_ocall_t*, pms);
-	ms->ms_retval = sgx_thread_setwait_untrusted_events_ocall((const void*)ms->ms_waiter, (const void*)ms->ms_self);
+	ms->ms_retval = sgx_thread_setwait_untrusted_events_ocall(ms->ms_waiter, ms->ms_self);
 
 	return SGX_SUCCESS;
 }
@@ -560,7 +560,7 @@ static sgx_status_t SGX_CDECL Enclave_sgx_thread_setwait_untrusted_events_ocall(
 static sgx_status_t SGX_CDECL Enclave_sgx_thread_set_multiple_untrusted_events_ocall(void* pms)
 {
 	ms_sgx_thread_set_multiple_untrusted_events_ocall_t* ms = SGX_CAST(ms_sgx_thread_set_multiple_untrusted_events_ocall_t*, pms);
-	ms->ms_retval = sgx_thread_set_multiple_untrusted_events_ocall((const void**)ms->ms_waiters, ms->ms_total);
+	ms->ms_retval = sgx_thread_set_multiple_untrusted_events_ocall(ms->ms_waiters, ms->ms_total);
 
 	return SGX_SUCCESS;
 }
@@ -920,7 +920,7 @@ sgx_status_t ecall_pointer_string(sgx_enclave_id_t eid, char* str)
 {
 	sgx_status_t status;
 	ms_ecall_pointer_string_t ms;
-	ms.ms_str = (char*)str;
+	ms.ms_str = str;
 	ms.ms_str_len = str ? strlen(str) + 1 : 0;
 	status = sgx_ecall(eid, 25, &ocall_table_Enclave, &ms);
 	return status;
@@ -930,7 +930,7 @@ sgx_status_t ecall_pointer_string_const(sgx_enclave_id_t eid, const char* str)
 {
 	sgx_status_t status;
 	ms_ecall_pointer_string_const_t ms;
-	ms.ms_str = (char*)str;
+	ms.ms_str = str;
 	ms.ms_str_len = str ? strlen(str) + 1 : 0;
 	status = sgx_ecall(eid, 26, &ocall_table_Enclave, &ms);
 	return status;
@@ -960,7 +960,7 @@ sgx_status_t ecall_pointer_isptr_readonly(sgx_enclave_id_t eid, buffer_t buf, si
 {
 	sgx_status_t status;
 	ms_ecall_pointer_isptr_readonly_t ms;
-	ms.ms_buf = (buffer_t)buf;
+	ms.ms_buf = buf;
 	ms.ms_len = len;
 	status = sgx_ecall(eid, 29, &ocall_table_Enclave, &ms);
 	return status;

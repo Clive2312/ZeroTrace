@@ -5,7 +5,7 @@
 #include <wchar.h>
 #include <stddef.h>
 #include <string.h>
-#include "sgx_edger8r.h" /* for sgx_satus_t etc. */
+#include "sgx_edger8r.h" /* for sgx_status_t etc. */
 
 #include "user_types.h"
 
@@ -33,27 +33,90 @@ typedef union union_foo_t {
 	uint64_t union_foo_3;
 } union_foo_t;
 
+#ifndef OCALL_PRINT_STRING_DEFINED__
+#define OCALL_PRINT_STRING_DEFINED__
 void SGX_UBRIDGE(SGX_NOCONVENTION, ocall_print_string, (const char* str));
-unsigned char* SGX_UBRIDGE(SGX_NOCONVENTION, getOutsidePtr_OCALL, ());
+#endif
+#ifndef GETOUTSIDEPTR_OCALL_DEFINED__
+#define GETOUTSIDEPTR_OCALL_DEFINED__
+unsigned char* SGX_UBRIDGE(SGX_NOCONVENTION, getOutsidePtr_OCALL, (void));
+#endif
+#ifndef MYPRINTF_DEFINED__
+#define MYPRINTF_DEFINED__
 void SGX_UBRIDGE(SGX_NOCONVENTION, myprintf, (char* buffer, uint32_t buffer_size));
+#endif
+#ifndef CREATELSORAM_OCALL_DEFINED__
+#define CREATELSORAM_OCALL_DEFINED__
 void* SGX_UBRIDGE(SGX_NOCONVENTION, createLSORAM_OCALL, (uint32_t id, uint32_t key_size, uint32_t value_size, uint32_t num_blocks_p, uint8_t oblv_mode));
+#endif
+#ifndef BUILD_FETCHCHILDHASH_DEFINED__
+#define BUILD_FETCHCHILDHASH_DEFINED__
 void SGX_UBRIDGE(SGX_NOCONVENTION, build_fetchChildHash, (uint32_t instance_id, uint8_t oram_type, uint32_t left, uint32_t right, unsigned char* lchild, unsigned char* rchild, uint32_t hash_size, uint32_t recursion_level));
+#endif
+#ifndef UPLOADBUCKET_OCALL_DEFINED__
+#define UPLOADBUCKET_OCALL_DEFINED__
 uint8_t SGX_UBRIDGE(SGX_NOCONVENTION, uploadBucket_OCALL, (uint32_t instance_id, uint8_t oram_type, unsigned char* serialized_bucket, uint32_t bucket_size, uint32_t label, unsigned char* hash, uint32_t hash_size, uint32_t size_for_level, uint8_t recursion_level));
+#endif
+#ifndef DOWNLOADBUCKET_OCALL_DEFINED__
+#define DOWNLOADBUCKET_OCALL_DEFINED__
 uint8_t SGX_UBRIDGE(SGX_NOCONVENTION, downloadBucket_OCALL, (uint32_t instance_id, uint8_t oram_type, unsigned char* serialized_bucket, uint32_t bucket_size, uint32_t label, unsigned char* hash, uint32_t hash_size, uint32_t size_for_level, uint8_t level));
+#endif
+#ifndef DOWNLOADPATH_OCALL_DEFINED__
+#define DOWNLOADPATH_OCALL_DEFINED__
 uint8_t SGX_UBRIDGE(SGX_NOCONVENTION, downloadPath_OCALL, (uint32_t instance_id, uint8_t oram_type, unsigned char* serialized_path, uint32_t path_size, uint32_t label, unsigned char* path_hash, uint32_t path_hash_size, uint8_t level, uint32_t D_lev));
+#endif
+#ifndef UPLOADPATH_OCALL_DEFINED__
+#define UPLOADPATH_OCALL_DEFINED__
 uint8_t SGX_UBRIDGE(SGX_NOCONVENTION, uploadPath_OCALL, (uint32_t instance_id, uint8_t oram_type, unsigned char* serialized_path, uint32_t path_size, uint32_t label, unsigned char* path_hash, uint32_t path_hash_size, uint8_t level, uint32_t D_level));
+#endif
+#ifndef TIME_REPORT_DEFINED__
+#define TIME_REPORT_DEFINED__
 void SGX_UBRIDGE(SGX_NOCONVENTION, time_report, (int report_type, uint8_t level));
+#endif
+#ifndef OCALL_POINTER_USER_CHECK_DEFINED__
+#define OCALL_POINTER_USER_CHECK_DEFINED__
 void SGX_UBRIDGE(SGX_NOCONVENTION, ocall_pointer_user_check, (int* val));
+#endif
+#ifndef OCALL_POINTER_IN_DEFINED__
+#define OCALL_POINTER_IN_DEFINED__
 void SGX_UBRIDGE(SGX_NOCONVENTION, ocall_pointer_in, (int* val));
+#endif
+#ifndef OCALL_POINTER_OUT_DEFINED__
+#define OCALL_POINTER_OUT_DEFINED__
 void SGX_UBRIDGE(SGX_NOCONVENTION, ocall_pointer_out, (int* val));
+#endif
+#ifndef OCALL_POINTER_IN_OUT_DEFINED__
+#define OCALL_POINTER_IN_OUT_DEFINED__
 void SGX_UBRIDGE(SGX_NOCONVENTION, ocall_pointer_in_out, (int* val));
+#endif
+#ifndef MEMCCPY_DEFINED__
+#define MEMCCPY_DEFINED__
 SGX_DLLIMPORT void* SGX_UBRIDGE(SGX_CDECL, memccpy, (void* dest, const void* src, int val, size_t len));
-void SGX_UBRIDGE(SGX_NOCONVENTION, ocall_function_allow, ());
+#endif
+#ifndef OCALL_FUNCTION_ALLOW_DEFINED__
+#define OCALL_FUNCTION_ALLOW_DEFINED__
+void SGX_UBRIDGE(SGX_NOCONVENTION, ocall_function_allow, (void));
+#endif
+#ifndef SGX_OC_CPUIDEX_DEFINED__
+#define SGX_OC_CPUIDEX_DEFINED__
 void SGX_UBRIDGE(SGX_CDECL, sgx_oc_cpuidex, (int cpuinfo[4], int leaf, int subleaf));
+#endif
+#ifndef SGX_THREAD_WAIT_UNTRUSTED_EVENT_OCALL_DEFINED__
+#define SGX_THREAD_WAIT_UNTRUSTED_EVENT_OCALL_DEFINED__
 int SGX_UBRIDGE(SGX_CDECL, sgx_thread_wait_untrusted_event_ocall, (const void* self));
+#endif
+#ifndef SGX_THREAD_SET_UNTRUSTED_EVENT_OCALL_DEFINED__
+#define SGX_THREAD_SET_UNTRUSTED_EVENT_OCALL_DEFINED__
 int SGX_UBRIDGE(SGX_CDECL, sgx_thread_set_untrusted_event_ocall, (const void* waiter));
+#endif
+#ifndef SGX_THREAD_SETWAIT_UNTRUSTED_EVENTS_OCALL_DEFINED__
+#define SGX_THREAD_SETWAIT_UNTRUSTED_EVENTS_OCALL_DEFINED__
 int SGX_UBRIDGE(SGX_CDECL, sgx_thread_setwait_untrusted_events_ocall, (const void* waiter, const void* self));
+#endif
+#ifndef SGX_THREAD_SET_MULTIPLE_UNTRUSTED_EVENTS_OCALL_DEFINED__
+#define SGX_THREAD_SET_MULTIPLE_UNTRUSTED_EVENTS_OCALL_DEFINED__
 int SGX_UBRIDGE(SGX_CDECL, sgx_thread_set_multiple_untrusted_events_ocall, (const void** waiters, size_t total));
+#endif
 
 sgx_status_t getNewORAMInstanceID(sgx_enclave_id_t eid, uint32_t* retval, uint8_t oram_type);
 sgx_status_t createNewORAMInstance(sgx_enclave_id_t eid, uint8_t* retval, uint32_t instance_id, uint32_t maxBlocks, uint32_t dataSize, uint32_t stashSize, uint32_t oblivious_flag, uint32_t recursion_data_size, int8_t recursion_levels, uint8_t oram_type, uint8_t pZ);
